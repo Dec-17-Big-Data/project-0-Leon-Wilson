@@ -1,0 +1,7 @@
+package banking.menus;
+
+import banking.menus.Menu;
+
+public class EditUserInfoMenu extends Menu {
+
+}

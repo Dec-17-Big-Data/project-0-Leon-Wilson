@@ -1,0 +1,7 @@
+package banking;
+
+public class Transaction {
+	String recipient;
+	Double amount;
+	TransactionType type;
+}

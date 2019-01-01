@@ -1,0 +1,15 @@
+package banking;
+
+public class SuperUser {
+
+	private final String username;
+	
+//---CONSTRUCTORS---//
+	public SuperUser() {
+		username = "root";
+	}
+	
+//---FUNCTIONS---//
+	
+	//--GETTERS/SETTERS--//
+}

@@ -1,0 +1,65 @@
+package banking;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class SuperUser {
+
+	private final String username;
+	private String password;
+	private Set<User> users;
+	
+//---CONSTRUCTORS---//
+	
+	//--NEW SUPER USER--//
+	public SuperUser() {
+		this.username = "root";
+		this.setPassword("Administration-Dec");
+		this.setUsers(new HashSet<User>());
+	}
+	
+	//--EXISTING SUPER USER--//
+	public SuperUser(String username, String password, HashSet<User> users) {
+		this.username = username;
+		this.setPassword(password);
+		this.setUsers(users);
+	}
+	
+//---FUNCTIONS---//
+	
+	//--FUNCTIONALITY--//
+	public void addUser(User user) {
+		
+	}
+	
+	public void removeUser(User user) {
+		
+	}
+	
+	public void alterUser() {
+		
+	}
+	
+	//--GETTERS/SETTERS--//
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+	
+	
+}

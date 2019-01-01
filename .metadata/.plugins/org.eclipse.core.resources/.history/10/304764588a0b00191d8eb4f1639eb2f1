@@ -1,0 +1,15 @@
+package banking;
+
+import java.sql.*;
+
+public class DatabaseConnection {
+
+	
+	public void encrypt() {
+		
+	}
+	
+	public void decrypt() {
+		
+	}
+}

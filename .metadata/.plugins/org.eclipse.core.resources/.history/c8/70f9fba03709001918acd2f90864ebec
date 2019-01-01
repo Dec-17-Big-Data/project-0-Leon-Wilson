@@ -1,0 +1,15 @@
+package banking;
+
+public class ChargeCard {
+	Integer cardNumber;
+	Integer cardPin;
+	Account cardAccount;
+	
+	public void debitPurchase(Double cost) {
+		
+	}
+	
+	public void creditPurchase(Double cost) {
+		
+	}
+}

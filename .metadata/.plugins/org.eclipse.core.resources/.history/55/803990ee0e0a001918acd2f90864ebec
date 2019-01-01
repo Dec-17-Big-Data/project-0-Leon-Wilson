@@ -1,0 +1,5 @@
+package banking.menus;
+
+public class CardsMenu extends Menu {
+
+}

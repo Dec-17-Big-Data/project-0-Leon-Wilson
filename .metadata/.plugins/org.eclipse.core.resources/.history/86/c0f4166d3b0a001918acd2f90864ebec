@@ -1,0 +1,179 @@
+package banking;
+
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class User {
+
+	//List of accounts
+	private String firstName;
+	private String lastName;
+	private String username;
+	private String password; //encrypt
+	private Set<Account> accounts;
+	private Set<ChargeCard> cards;
+	
+//---CONSTRUCTORS---//
+	
+	//--NEW USER--//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public User(String firstName, String lastName, String username, String password) {
+		this.username = username;
+		this.password = password;
+		this.accounts = new HashSet<Account>();
+		this.accounts.add(new Account()); //default account
+		//no card
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public User(String firstName, String lastName, String username, String password, Account newAccount) {
+		this.username = username;
+		this.password = password;
+		this.accounts = new HashSet<Account>();
+		this.accounts.add(newAccount);
+		this.setCards(new HashSet<ChargeCard>());
+		//no card
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public User(String firstName, String lastName, String username, String password, ChargeCard card) {
+		this.username = username;
+		this.password = password;
+		this.accounts = new HashSet<Account>();
+		this.accounts.add(new Account()); //default account
+		this.setCards(new HashSet<ChargeCard>());	
+		this.getCards().add(card);
+		}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public User(String firstName, String lastName, String username, String password, Account newAccount, ChargeCard card) {
+		this.username = username;
+		this.password = password;
+		this.accounts = new HashSet<Account>();
+		this.accounts.add(newAccount);
+		this.setCards(new HashSet<ChargeCard>());
+		this.getCards().add(card);
+		}
+	
+	//--EXISTING USER--//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public User(String firstName, String lastName, String username, String password, Set<Account> accounts, ChargeCard card) {
+		this.username = username;
+		this.password = password;
+		this.accounts = accounts;
+		this.setCards(new HashSet<ChargeCard>());
+		this.getCards().add(card);
+		}
+	
+//---FUNCTIONS---//
+	
+	//--DISPLAY--//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayAccounts() {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayUserSummary() {
+		
+	}
+
+	//--FUNCTIONALITY--//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void addAccount(String name, AccountTypes type) {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void addAccount(String name, AccountTypes type, Double initialBalance) {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void deleteAccount(Account a1) {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void transferBetweenAccounts(Account a1, Account a2, Double amount) {
+		
+	}
+	
+	//--GETTERS/SETTERS--//
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
+	
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public Set<ChargeCard> getCards() {
+		return cards;
+	}
+
+	public void setCards(Set<ChargeCard> cards) {
+		this.cards = cards;
+	}
+	
+}

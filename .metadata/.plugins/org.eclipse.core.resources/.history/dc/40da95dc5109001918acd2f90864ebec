@@ -1,0 +1,23 @@
+package banking;
+
+public class ChargeCard {
+	Integer cardNumber;
+	Integer cardPin;
+	Integer creditLimit;
+	Account cardAccount;
+	
+//---CONSTRUCTORS---//
+	
+
+//---FUNCTIONS---//
+	
+	public void debitPurchase(Integer pin, Transaction trans) {
+		
+	}
+	
+	public void creditPurchase(Transaction trans) {
+		
+	}
+	
+	//--GETTERS/SETTERS--//
+}

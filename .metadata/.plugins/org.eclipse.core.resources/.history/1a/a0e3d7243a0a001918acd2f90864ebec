@@ -1,0 +1,18 @@
+package banking;
+
+public class SuperUser {
+
+	private final String username;
+	private String password;
+	
+//---CONSTRUCTORS---//
+	public SuperUser() {
+		this.username = "root";
+		this.KEY ="";
+		this.password = "Administration-Dec-2018";
+	}
+	
+//---FUNCTIONS---//
+	
+	//--GETTERS/SETTERS--//
+}

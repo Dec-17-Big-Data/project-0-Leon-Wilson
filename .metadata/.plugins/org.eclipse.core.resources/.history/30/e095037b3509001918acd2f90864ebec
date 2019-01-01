@@ -1,0 +1,10 @@
+package banking;
+
+public class IncorrectCredentialsException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3924592298253710933L;
+
+}

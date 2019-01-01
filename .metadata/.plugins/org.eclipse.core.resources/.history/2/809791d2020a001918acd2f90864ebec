@@ -1,0 +1,8 @@
+package banking;
+
+public class Menu {
+	String globalCommands =  "[sign\\sout]";
+	public void parseCommand(String command) {
+		
+	}
+}
