@@ -2,4 +2,5 @@
 <typeInfoHistroy>
 <typeInfo handle="=JDBCBank/\/Library\/Java\/JavaVirtualMachines\/jdk1.8.0_111.jdk\/Contents\/Home\/jre\/lib\/rt.jar&lt;java.lang(Exception.class[Exception" modifiers="33" timestamp="1474584629000"/>
 <typeInfo handle="=JDBCBank/src\/main\/java&lt;banking.menus{Menu.java[Menu" modifiers="1025" timestamp="1545936209000"/>
+<typeInfo handle="=JDBCBank/src\/main\/java&lt;banking.DAO{bankingDAO.java[bankingDAO" modifiers="513" timestamp="1546445138000"/>
 </typeInfoHistroy>

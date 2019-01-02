@@ -1,7 +1,8 @@
 package banking;
 
 public class ChargeCard {
-	private Long cardNumber;
+	private Integer cardID;
+	private Integer cardNumber;
 	private Integer cardPin;
 	private Double creditLimit;
 	private Account cardAccount;
@@ -13,8 +14,9 @@ public class ChargeCard {
 	/***
 	 * @author Leon Wilson
 	 */
-	public ChargeCard(Integer pin, Account account) {
-		this.setCardNumber(1111222233334444L);//Assign a card number
+	public ChargeCard(Integer cardID, Integer pin, Account account) {
+		this.setCardID(cardID);
+		this.setCardNumber(111222333);//Assign a card number
 		this.setCardPin(pin);
 		this.setCreditLimit(500.00D);
 		this.setCardAccount(account);
@@ -25,7 +27,8 @@ public class ChargeCard {
 	/***
 	 * @author Leon Wilson
 	 */
-	public ChargeCard(Long cardNumber, Integer pin, Double limit, Account account) {
+	public ChargeCard(Integer cardID, Integer cardNumber, Integer pin, Double limit, Account account) {
+		this.setCardID(cardID);
 		this.setCardNumber(cardNumber);
 		this.setCardPin(pin);
 		this.setCreditLimit(limit);
@@ -50,11 +53,19 @@ public class ChargeCard {
 
 	//--GETTERS/SETTERS--//
 	
-	public Long getCardNumber() {
+	public Integer getCardID() {
+		return cardID;
+	}
+
+	public void setCardID(Integer cardID) {
+		this.cardID = cardID;
+	}
+
+	public Integer getCardNumber() {
 		return cardNumber;
 	}
 	
-	public void setCardNumber(Long cardNumber) {
+	public void setCardNumber(Integer cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 

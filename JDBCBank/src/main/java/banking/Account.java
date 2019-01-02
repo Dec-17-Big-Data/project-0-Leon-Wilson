@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Account {
 	private String accountName;
-	private Long accountID;
+	private Integer accountID;
+	private Integer userID;
 	private final AccountTypes type;
 	private Double balance;
 	private List<Transaction> pendingTransactions;
@@ -19,7 +20,8 @@ public class Account {
 	 */
 	public Account() {
 		this.accountName = "Default";
-		this.accountID = 00000l;
+		this.setAccountID(00000);
+		this.setUserID(userID);
 		this.type = AccountTypes.checking;
 		this.balance = 0.00D;
 		this.pendingTransactions = new ArrayList<Transaction>();
@@ -29,8 +31,10 @@ public class Account {
 	/***
 	 * @author Leon Wilson
 	 */
-	public Account(String name, AccountTypes type) {
+	public Account(String name, Integer accountID, Integer userID, AccountTypes type) {
 		this.accountName = name;
+		this.setAccountID(accountID);
+		this.setUserID(userID);
 		this.type = type;
 		this.balance = 0.00D;
 		this.pendingTransactions = new ArrayList<Transaction>();
@@ -40,8 +44,10 @@ public class Account {
 	/***
 	 * @author Leon Wilson
 	 */
-	public Account(String name,AccountTypes type, Double startingBalance) {
+	public Account(String name, Integer accountID, Integer userID, AccountTypes type, Double startingBalance) {
 		this.accountName = name;
+		this.setAccountID(accountID);
+		this.setUserID(userID);
 		this.type = type;
 		this.balance = startingBalance;
 		this.pendingTransactions = new ArrayList<Transaction>();
@@ -53,10 +59,12 @@ public class Account {
 	/***
 	 * @author Leon Wilson
 	 */
-	public Account(String name,AccountTypes type, Double startingBalance, List<Transaction> pendingTransactions, List<Transaction> transactionHistory) {
+	public Account(String name, Integer accountID, Integer userID, AccountTypes type, Double balance, List<Transaction> pendingTransactions, List<Transaction> transactionHistory) {
 		this.accountName = name;
+		this.setAccountID(accountID);
+		this.setUserID(userID);
 		this.type = type;
-		this.balance = startingBalance;
+		this.balance = balance;
 		this.pendingTransactions = pendingTransactions;
 		this.transactionHistory = transactionHistory;
 	}
@@ -128,6 +136,22 @@ public class Account {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
+	}
+	
+	public Integer getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Integer accountID) {
+		this.accountID = accountID;
+	}
+
+	public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
 	}
 
 	public AccountTypes getType() {

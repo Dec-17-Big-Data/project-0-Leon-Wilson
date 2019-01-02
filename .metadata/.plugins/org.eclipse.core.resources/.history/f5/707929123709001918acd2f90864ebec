@@ -1,5 +1,0 @@
-package banking.exceptions;
-
-public class NonEmptyAccountException extends Exception {
-
-}

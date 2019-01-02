@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class SuperUser {
 
+	private Integer userID;
 	private final String username;
 	private String password;
 	private Set<User> users;
@@ -13,13 +14,15 @@ public class SuperUser {
 	
 	//--NEW SUPER USER--//
 	public SuperUser() {
+		this.userID = 0000;
 		this.username = "root";
 		this.setPassword("Administration-Dec");
 		this.setUsers(new HashSet<User>());
 	}
 	
 	//--EXISTING SUPER USER--//
-	public SuperUser(String username, String password, HashSet<User> users) {
+	public SuperUser(Integer userID, String username, String password, HashSet<User> users) {
+		this.userID = userID;
 		this.username = username;
 		this.setPassword(password);
 		this.setUsers(users);
@@ -55,7 +58,16 @@ public class SuperUser {
 		
 	}
 	
+
 	//--GETTERS/SETTERS--//
+	public Integer getUserID() {
+		return userID;
+	}
+	
+	public void setUserID(Integer userID) {
+		this.userID = userID;
+	}
+	
 	public String getUsername() {
 		return username;
 	}

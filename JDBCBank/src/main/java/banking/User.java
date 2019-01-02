@@ -7,6 +7,7 @@ import java.util.Set;
 public class User {
 
 	//List of accounts
+	private Integer userID;
 	private String firstName;
 	private String lastName;
 	private String username;
@@ -22,11 +23,12 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public User(String firstName, String lastName, String username, String phoneNumber, String password) {
+	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password) {
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
-		this.phoneNumber = phoneNumber;
+		this.setPhoneNumber(phoneNumber);
 		this.password = password;
 		this.accounts = new HashSet<Account>();
 		this.accounts.add(new Account()); //default account
@@ -36,11 +38,12 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public User(String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount) {
+	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount) {
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
-		this.phoneNumber = phoneNumber;
+		this.setPhoneNumber(phoneNumber);
 		this.password = password;
 		this.accounts = new HashSet<Account>();
 		this.accounts.add(newAccount);
@@ -51,11 +54,12 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public User(String firstName, String lastName, String username, String phoneNumber, String password, ChargeCard card) {
+	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, ChargeCard card) {
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
-		this.phoneNumber = phoneNumber;
+		this.setPhoneNumber(phoneNumber);
 		this.password = password;
 		this.accounts = new HashSet<Account>();
 		this.accounts.add(new Account()); //default account
@@ -66,11 +70,12 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public User(String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount, ChargeCard card) {
+	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount, ChargeCard card) {
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
-		this.phoneNumber = phoneNumber;
+		this.setPhoneNumber(phoneNumber);
 		this.password = password;
 		this.accounts = new HashSet<Account>();
 		this.accounts.add(newAccount);
@@ -83,11 +88,12 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public User(String firstName, String lastName, String username, String phoneNumber, String password, Set<Account> accounts, Set<ChargeCard> cards) {
+	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Set<Account> accounts, Set<ChargeCard> cards) {
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
-		this.phoneNumber = phoneNumber;
+		this.setPhoneNumber(phoneNumber);
 		this.password = password;
 		this.setAccounts(accounts);
 		this.setCards(cards);
@@ -147,6 +153,14 @@ public class User {
 	
 	//--GETTERS/SETTERS--//
 	
+	public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -169,6 +183,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	
 	public String getPassword() {
