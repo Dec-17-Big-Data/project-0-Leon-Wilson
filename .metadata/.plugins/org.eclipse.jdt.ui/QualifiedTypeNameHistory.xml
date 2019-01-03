@@ -18,6 +18,6 @@
 <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
 <fullyQualifiedTypeName name="banking.DAO.bankingOracle"/>
 <fullyQualifiedTypeName name="banking.DAO.bankingDAO"/>
-<fullyQualifiedTypeName name="banking.Services.BankingService"/>
 <fullyQualifiedTypeName name="banking.DAO.BankingOracle"/>
+<fullyQualifiedTypeName name="banking.Services.BankingService"/>
 </qualifiedTypeNameHistroy>

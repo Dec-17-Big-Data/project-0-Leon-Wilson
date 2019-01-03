@@ -36,7 +36,7 @@
 			<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
 			<item value="500" key="DIALOG_HEIGHT"/>
 			<item value="-32" key="DIALOG_X_ORIGIN"/>
-			<item value="-15" key="DIALOG_Y_ORIGIN"/>
+			<item value="-14" key="DIALOG_Y_ORIGIN"/>
 		</section>
 	</section>
 	<section name="DialogBounds_GenerateConstructorUsingFieldsSelectionDialog">
