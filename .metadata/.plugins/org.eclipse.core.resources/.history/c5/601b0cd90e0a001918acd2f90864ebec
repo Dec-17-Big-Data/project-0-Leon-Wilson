@@ -1,7 +1,0 @@
-package banking.menus;
-
-import banking.menus.Menu;
-
-public class SuperUserHomeMenu extends Menu {
-
-}

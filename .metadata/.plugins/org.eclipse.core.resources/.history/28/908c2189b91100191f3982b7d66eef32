@@ -1,0 +1,35 @@
+package banking.DAO;
+
+import java.util.List;
+import java.util.Optional;
+
+import banking.model.*;
+
+public interface BankingDAO {
+	
+	
+	//--USERS--//
+	Optional<User> getUser(Integer userID);
+	Optional<User> signInUser(String username, String password);
+	
+	//--ACCOUNTS--//
+	Optional<List<Account>> getUsersAccounts(Integer userID);
+	
+	//--CARDS--//
+	Optional<List<ChargeCard>> getAllCards(Integer accountID);
+	Optional<ChargeCard> getAccountCard(Integer accountID);
+	
+	//--SUPER USER--//
+	Optional<List<User>> getAllUsers();
+	Optional<SuperUser> signInSuperUser(String username, String password);
+	
+	//--TRANSACTIONS--//
+	
+	//--TRANSFERS--//
+	
+	//--DEPOSITS & WITHDRAWLS--//
+	
+	//--ERRORS--//
+	
+	
+}

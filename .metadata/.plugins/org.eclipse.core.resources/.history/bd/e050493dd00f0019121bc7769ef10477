@@ -1,0 +1,199 @@
+package banking.menus;
+
+import banking.InputHelper;
+import banking.exceptions.ExitingException;
+
+public class NewUserMenu extends Menu {
+	protected String commands ="create";
+	private static String name = "New User";
+	private Integer maxArguments = 3;
+	private static Menu menu = null;
+	
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the new user page. Here you can create a new user and start a bank account. \n(WARNING) This page is not stored in the navigation history upon successful creating an account\n"
+			+ "\nCOMMANDS\n"
+			+ "create : walks you through the user creation process. Automatically signs you and takes you to your Home screen\n"
+			+ "----------------";
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new NewUserMenu();
+		}
+		return menu;
+	}
+	
+	private NewUserMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				case "create":
+					//WALK THROUGH PROCESS
+					creationProcess();
+					break;
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public void getHelp() {
+		System.out.println(help);
+	}
+	
+	public void creationProcess() {
+		Boolean incomplete = true;
+		Integer userID;
+		String firstName = "";
+		String lastName = "";
+		String username = "";
+		String phoneNumber = "";
+		String password = "";
+		String passConfirm = "";
+		
+		do {
+			//FIRST NAME
+			if(!firstName.equals("")) {
+				//prompt for re-enter
+				do {
+					System.out.println("\nFirst name already entered, would you like to re-enter? Y or N");
+					String input = InputHelper.getInputHelper().getInput();
+					if(input.equals("Y")) {
+						firstName = InputHelper.getInputHelper().getInput();
+						break;
+					} else if(input.equals("N")) {
+						break;
+					}
+					continue;
+				}while(true);
+			} else {
+				System.out.println("\nPlease enter your first name.");
+				firstName = InputHelper.getInputHelper().getInput();
+			}
+			
+			//LAST NAME
+			if(!lastName.equals("")) {
+				//prompt for re-enter
+				do {
+					System.out.println("\nLast name already entered, would you like to re-enter? Y or N");
+					String input = InputHelper.getInputHelper().getInput();
+					if(input.equals("Y")) {
+						lastName = InputHelper.getInputHelper().getInput();
+						break;
+					} else if(input.equals("N")) {
+						break;
+					}
+					continue;
+				}while(true);
+			} else {
+				System.out.println("\nPlease enter your last name.");
+				lastName = InputHelper.getInputHelper().getInput();
+			}
+			
+			//USERNAME
+			if(!username.equals("")) {
+				//prompt for re-enter
+				do {
+					System.out.println("\nUsername already entered, would you like to re-enter? Y or N");
+					String input = InputHelper.getInputHelper().getInput();
+					if(input.equals("Y")) {
+						username = InputHelper.getInputHelper().getInput();
+						break;
+					} else if(input.equals("N")) {
+						break;
+					}
+					continue;
+				}while(true);
+			}else {
+				System.out.println("\nPlease enter a username.");
+				username = InputHelper.getInputHelper().getInput();
+			}
+			
+			//PHONE NUMBER
+			if(!phoneNumber.equals("")) {
+				//prompt for re-enter
+				do {
+					System.out.println("\nPhone number already entered, would you like to re-enter? Y or N");
+					String input = InputHelper.getInputHelper().getInput();
+					if(input.equals("Y")) {
+						phoneNumber = InputHelper.getInputHelper().getInput();
+						break;
+					} else if(input.equals("N")) {
+						break;
+					}
+					continue;
+				}while(true);
+			}else {
+				System.out.println("\nPlease enter your phone number (Please follow the format : ###-###-####)");
+				phoneNumber = InputHelper.getInputHelper().getInput();
+			}
+			
+			//PASSWORD
+			do {
+				System.out.println("\nPlease enter a password.");
+				password = InputHelper.getInputHelper().getInput();
+				System.out.println("\nPlease confirm your password.");
+				passConfirm = InputHelper.getInputHelper().getInput();
+				if(!password.equals(passConfirm)){
+					System.out.println("\nPasswords do not match");
+				}
+			}while(password.equals("") || !password.equals(passConfirm));
+			
+			incomplete = validateInfo(firstName,lastName,username,phoneNumber,password,passConfirm);
+		} while (incomplete);
+	}
+	
+	public boolean validateInfo(String first, String last, String user, String phone, String pass, String confirm) {
+		StringBuilder errors = new StringBuilder("Errors Found:\n");
+		if(first.equals("")) {
+			errors.append("\nFirst name cannot be empty");
+		}
+		
+		if(last.equals("")){
+			errors.append("\nLast name cannot be empty");
+		}
+		
+		if(user.equals("")) {
+			errors.append("\nUsername cannot be empty");
+		}
+		
+		if(phone.equals("")) {
+			errors.append("\nPhone number cannot be empty");
+		} else if(phone.matches("[^0-9|-]"))
+		{
+			errors.append("\nInvalid symbols found in phone number");
+		} else {
+			if(phone.replaceAll("[^0-9]", "").length() != 10) {
+				errors.append("\nIncorrect amount of digits (It should be 10 digits)");
+			}	
+		}
+		
+		if(pass.length() < 8) {
+			errors.append("Password is too short");
+		}
+		
+		if(!errors.equals("Errors Found:\n")){
+			System.out.println(errors.toString());
+		}
+		
+		return true;
+	}
+}

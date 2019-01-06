@@ -16,4 +16,16 @@ public class AccountsMenu extends Menu {
 	private AccountsMenu() {
 		
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
+	}
 }

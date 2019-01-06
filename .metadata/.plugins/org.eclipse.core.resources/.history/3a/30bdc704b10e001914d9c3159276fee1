@@ -1,0 +1,7 @@
+package banking;
+
+public class ErrorLogs {
+	private Integer error_id;
+	private Integer account_id;
+	private ErrorType error_type;
+}

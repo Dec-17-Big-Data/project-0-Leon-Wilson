@@ -1,0 +1,16 @@
+package banking;
+
+public class InputHelper {
+	private static InputHelper inputHelper = null;
+	private Scanner scanner;
+	
+	private InputHelper() {
+		
+	}
+	
+	public getInputHelper() {
+		if(inputHelper == null) {
+			inputHelper = new InputHelper();
+		}
+	}
+}

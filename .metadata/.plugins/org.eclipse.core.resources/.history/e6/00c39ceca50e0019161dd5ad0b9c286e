@@ -1,0 +1,7 @@
+package banking.DAO;
+
+import java.util.Optional;
+
+public interface bankingDAO {
+	Optional<List<User>> getUsers();
+}

@@ -1,5 +1,0 @@
-package banking.menus;
-
-public class SignUpMenu extends Menu {
-	private String loginCommands ="";
-}

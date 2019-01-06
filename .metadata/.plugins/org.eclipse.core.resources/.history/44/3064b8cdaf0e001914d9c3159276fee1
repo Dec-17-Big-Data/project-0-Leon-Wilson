@@ -1,0 +1,16 @@
+package banking;
+
+public class Transfer {
+	private Integer transferID;
+	private Integer userID;
+	private Integer toAccountID;
+	private Integer fromAccountID;
+	private Double amount;
+	//ADD DATE
+	public Integer getTransferID() {
+		return transferID;
+	}
+	public void setTransferID(Integer transferID) {
+		this.transferID = transferID;
+	}
+}

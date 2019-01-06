@@ -1,0 +1,14 @@
+package banking.menus.standard_user;
+
+import banking.menus.Menu;
+
+public class CardsMenu extends Menu {
+	private static Menu menu = null;
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new Menu();
+		}
+		return menu;
+	}
+}

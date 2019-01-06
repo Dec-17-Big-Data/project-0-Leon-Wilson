@@ -1,5 +1,0 @@
-package banking.exceptions.transfer_exceptions;
-
-public class SameAccountException extends Exception {
-
-}

@@ -1,0 +1,31 @@
+package banking.DAO;
+
+import java.util.List;
+import java.util.Optional;
+
+import banking.model.User;
+
+public class BankingOracle implements BankingDAO {
+	private static BankingOracle bankingOracle;
+	
+	public static BankingDAO getDAO() {
+		if(bankingOracle == null) {
+			
+		}
+		return bankingOracle;
+	}
+	
+	private BankingOracle() {
+		
+	}
+	public Optional<List<User>> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Optional<User> getUser(Integer userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

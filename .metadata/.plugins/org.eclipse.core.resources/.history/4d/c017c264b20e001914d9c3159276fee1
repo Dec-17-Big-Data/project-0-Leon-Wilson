@@ -1,0 +1,10 @@
+package banking;
+
+import java.time.LocalDateTime;
+
+public class ErrorLogs {
+	private Integer error_id;
+	private Integer account_id;
+	private ErrorType error_type;
+	private LocalDateTime timestamp;
+}

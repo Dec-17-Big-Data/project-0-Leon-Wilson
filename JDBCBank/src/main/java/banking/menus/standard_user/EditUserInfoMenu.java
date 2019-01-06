@@ -16,4 +16,16 @@ public class EditUserInfoMenu extends Menu {
 	private EditUserInfoMenu() {
 		
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
+	}
 }

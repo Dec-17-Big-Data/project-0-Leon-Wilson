@@ -1,0 +1,54 @@
+package banking;
+
+import java.time.LocalDateTime;
+
+public class ErrorLogs {
+	private Integer error_id;
+	private Integer account_id;
+	private ErrorType error_type;
+	private LocalDateTime timestamp;
+
+//--CONSTRUCTORS--//
+	public ErrorLogs(Integer error_id, Integer account_id, ErrorType error_type, LocalDateTime timestamp) {
+		super();
+		this.error_id = error_id;
+		this.account_id = account_id;
+		this.error_type = error_type;
+		this.timestamp = timestamp;
+	}
+
+//--FUNCTIONS--//
+	
+	//--GETTERS/SETTERS--//
+	public Integer getError_id() {
+		return error_id;
+	}
+
+	public void setError_id(Integer error_id) {
+		this.error_id = error_id;
+	}
+
+	public Integer getAccount_id() {
+		return account_id;
+	}
+
+	public void setAccount_id(Integer account_id) {
+		this.account_id = account_id;
+	}
+
+	public ErrorType getError_type() {
+		return error_type;
+	}
+
+	public void setError_type(ErrorType error_type) {
+		this.error_type = error_type;
+	}
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
+}

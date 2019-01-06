@@ -1,5 +1,6 @@
 package banking.menus.standard_user;
 
+import banking.exceptions.ExitingException;
 import banking.menus.Menu;
 
 public class SingleCardMenu extends Menu {
@@ -17,7 +18,7 @@ public class SingleCardMenu extends Menu {
 		
 	}
 	
-	protected boolean parseCommand(String command) {
+	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			//PARSE UNDER CURRENT MENU
 			//IF FOUND
@@ -28,5 +29,15 @@ public class SingleCardMenu extends Menu {
 		}
 		
 		return true;
+	}
+	
+	public String getName() {
+		return "";
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
 	}
 }

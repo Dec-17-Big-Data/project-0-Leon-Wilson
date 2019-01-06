@@ -1,0 +1,20 @@
+1546443477767	Encapsulate field 'phoneNumber'
+1546444506750	Encapsulate field 'userID'
+1546444760417	Encapsulate field 'accountID'
+1546446158421	Encapsulate field 'cardID'
+1546447973642	Encapsulate field 'userID'
+1546448380593	Encapsulate field 'transferID'
+1546448384504	Encapsulate field 'userID'
+1546448387598	Encapsulate field 'toAccountID'
+1546448390671	Encapsulate field 'fromAccountID'
+1546448394455	Encapsulate field 'amount'
+1546448583846	Encapsulate field 'userID'
+1546448886226	Rename type 'ErrorTypes'
+1546449649511	Encapsulate field 'timestamp'
+1546450709535	Delete element
+1546450747329	Rename resource 'Log4J.yaml'
+1546451146062	Rename resource 'connections.properties'
+1546459524637	Move compilation units
+1546459828917	Delete element
+1546460221944	Rename type 'bankingDAO'
+1546460230730	Rename type 'bankingOracle'

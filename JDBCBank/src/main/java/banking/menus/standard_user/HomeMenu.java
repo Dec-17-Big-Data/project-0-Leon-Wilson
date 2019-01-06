@@ -16,4 +16,16 @@ public class HomeMenu extends Menu {
 	private HomeMenu() {
 		
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
+	}
 }

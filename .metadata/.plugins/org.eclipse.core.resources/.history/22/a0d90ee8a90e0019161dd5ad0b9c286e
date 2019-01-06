@@ -1,0 +1,170 @@
+package banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account {
+	private String accountName;
+	private Integer accountID;
+	private final AccountTypes type;
+	private Double balance;
+	private List<Transaction> pendingTransactions;
+	private List<Transaction> transactionHistory;
+
+//---CONSTRUCTORS---//
+	
+	//--NEW ACCOUNTS--//
+	/***
+	 * @author Leon Wilson
+	 */
+	public Account() {
+		this.accountName = "Default";
+		this.setAccountID(00000);
+		this.type = AccountTypes.checking;
+		this.balance = 0.00D;
+		this.pendingTransactions = new ArrayList<Transaction>();
+		this.transactionHistory = new ArrayList<Transaction>();
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public Account(String name, Integer accountID, AccountTypes type) {
+		this.accountName = name;
+		this.setAccountID(accountID);
+		this.type = type;
+		this.balance = 0.00D;
+		this.pendingTransactions = new ArrayList<Transaction>();
+		this.transactionHistory = new ArrayList<Transaction>();
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public Account(String name, Integer accountID, AccountTypes type, Double startingBalance) {
+		this.accountName = name;
+		this.setAccountID(accountID);
+		this.type = type;
+		this.balance = startingBalance;
+		this.pendingTransactions = new ArrayList<Transaction>();
+		this.transactionHistory = new ArrayList<Transaction>();
+	}
+	
+	//--EXISTING ACCOUNT--//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public Account(String name, Integer accountID, AccountTypes type, Double startingBalance, List<Transaction> pendingTransactions, List<Transaction> transactionHistory) {
+		this.accountName = name;
+		this.setAccountID(accountID);
+		this.type = type;
+		this.balance = startingBalance;
+		this.pendingTransactions = pendingTransactions;
+		this.transactionHistory = transactionHistory;
+	}
+	
+//---FUNCTIONS---//
+	
+	//--DISPLAY--//
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayAccountSummary() {
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayCurrentBalance() {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayAvailableBalance() {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayPendingTransaction() {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayTransactionHistory() {
+		
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void displayAllTransactions() {
+		
+	}
+	
+	//--FUNCTIONALITY--//
+	/***
+	 * @author Leon Wilson
+	 */
+	public Double calculateAvailableBalanace() {
+		Double availableBalance = 0.00D;
+		return availableBalance;
+	}
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void withdrawFunds(Double funds) {
+		
+	}
+	
+	//--GETTERS/SETTERS--//
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+	
+	public Integer getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Integer accountID) {
+		this.accountID = accountID;
+	}
+
+	public AccountTypes getType() {
+		return type;
+	}
+
+	public Double getBalance() {
+		return balance;
+	}
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+	public List<Transaction> getPendingTransactions() {
+		return pendingTransactions;
+	}
+
+	public void setPendingTransactions(List<Transaction> pendingTransactions) {
+		this.pendingTransactions = pendingTransactions;
+	}
+
+	public List<Transaction> getTransactionHistory() {
+		return transactionHistory;
+	}
+
+	public void setTransactionHistory(List<Transaction> transactionHistory) {
+		this.transactionHistory = transactionHistory;
+	}
+}

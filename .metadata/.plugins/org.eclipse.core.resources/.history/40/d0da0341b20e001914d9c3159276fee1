@@ -1,0 +1,11 @@
+package banking;
+
+import java.time.LocalDateTime;
+
+public class DepositWithdrawl {
+	private Integer depositWithdrawlID;
+	private DepositOrWithdrawl type;
+	private Double amount;
+	private Integer accountID;
+	private LocalDateTime timestamp;
+}

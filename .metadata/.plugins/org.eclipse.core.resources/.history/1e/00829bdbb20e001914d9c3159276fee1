@@ -1,0 +1,36 @@
+package banking;
+
+public class Transaction {
+	final Integer transactionID;
+	final String recipient;
+	final Double amount;
+	final TransactionType type;
+	final Integer accountID;
+	//ADD DATE
+	
+//---CONSTRUCTORS---//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public Transaction(Integer transactionID, String recipient, Double amount, TransactionType type, Integer accountID) {
+		this.transactionID = transactionID;
+		this.recipient = recipient;
+		this.amount = amount;
+		this.type = type;
+		this.accountID = accountID;
+	}
+	
+//---FUNCTIONS---//
+	
+	/***
+	 * @author Leon Wilson
+	 */
+	public void approveTransaction(Account account) {
+		if(type == TransactionType.debit) {
+			
+		}
+	}
+	
+	//---GETTERS/SETTERS---//
+}

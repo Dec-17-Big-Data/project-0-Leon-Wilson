@@ -1,0 +1,26 @@
+package banking.menus.standard_user;
+
+import banking.menus.Menu;
+
+public class SingleCardMenu extends Menu {
+	private static Menu menu = null;
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new SingleCardMenu();
+		}
+		return menu;
+	}
+	
+	private SingleCardMenu() {
+		
+	}
+	
+	protected boolean parseCommand(String command) {
+		if(!super.parseCommand(command)) {
+			return true;
+		}
+		
+		return true;
+	}
+}

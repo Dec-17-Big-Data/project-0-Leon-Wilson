@@ -1,0 +1,37 @@
+package banking;
+
+import java.util.List;
+
+import banking.Services.BankingService;
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+import banking.model.User;
+
+public class Application {
+	public static void main(String[] args) {
+		BankingService bankingService = BankingService.getService();
+		InputHelper helper = InputHelper.getInputHelper();
+		Boolean exit = false;
+		List<User> ut = bankingService.getAllUsers().get();
+		while(!exit) {
+			System.out.println("\ncurrently on : " + Menu.navigationHistory.get(Menu.navigationHistory.size()-1).getName() + " Menu");
+			String input = helper.getInput();
+			try {
+				if(Menu.navigationHistory.get(Menu.navigationHistory.size()-1).parseCommand(input))
+				{
+					
+				}
+			} catch (ExitingException e) {
+				// TODO Auto-generated catch block
+				exit = true;
+			}
+			
+		}
+		helper.closeScanner();
+	}
+	
+	
+	public void initializeMenus() {
+		
+		}
+}

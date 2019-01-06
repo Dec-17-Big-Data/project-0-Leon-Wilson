@@ -1,0 +1,9 @@
+package banking;
+
+public class InputHelper {
+	private static InputHelper = null;
+	
+	private InputHelper() {
+		
+	}
+}

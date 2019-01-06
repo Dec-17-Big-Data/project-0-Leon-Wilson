@@ -1,9 +1,0 @@
-package banking;
-
-public class Menu {
-	String globalCommands =  "[sign-out]";
-	
-	public void parseCommand(String command) {
-		
-	}
-}

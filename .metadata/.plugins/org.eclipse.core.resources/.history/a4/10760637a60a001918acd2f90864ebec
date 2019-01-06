@@ -1,7 +1,0 @@
-package banking;
-
-import java.sql.*;
-
-public class DatabaseConnection {
-
-}

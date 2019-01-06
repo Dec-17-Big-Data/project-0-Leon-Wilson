@@ -1,0 +1,108 @@
+package banking.menus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import banking.InputHelper;
+import banking.exceptions.ExitingException;
+
+public abstract class Menu {
+	private String commands =  "(sign-out|help|back|exit|trail|home)";
+	private final Integer maxArguments = 1;
+	static public List<Menu> navigationHistory = new ArrayList<Menu>();
+	static {
+		navigationHistory.add(SignInMenu.getMenu());
+	}
+	
+	//HELP SCREEN
+	final static String help = "\nGLOBAL COMMANDS HELPER\n"
+			+ "These are the commands available to you on any page of the application\n"
+			+ "\nCOMMANDS\n"
+			+ "sign-out : signs the current user out of the application and returns to the Sign In screen.\n"
+			+ "help : returns the help for the global commands and the current screen.\n"
+			+ "back : returns to the previous screen. If used at the Sign in screen you will be prompted on whether you would like to exit.\n"
+			+ "exit : signs the current user out and exits the application\n"
+			+ "trail : shows you the trail you have taken throughout the application. Some pages may not be added to the navigation history\n"
+			+ "home : returns to the user's home screen\n"
+			+ "----------------";	
+	
+	/***
+	 * @author Leon Wilson
+	 * @param command
+	 */
+	public boolean parseCommand(String command) throws ExitingException/*throws somethingHere*/{
+		if(tooManyArguments(command, maxArguments)) {
+			//throw too many arguments?
+			return false;
+		}
+		
+		if(command.split(" ")[0].matches(commands)) {
+			switch(command.split(" ")[0]) {
+			case "sign-out":
+				//remove all menus but Sign In from navigationHistory
+				//If there is a currently logged in user, return them to null?
+				navigationHistory.removeIf(m -> m.getName() != "Sign In");
+				break;
+			case "help":
+				//call the help method on the last item added to the navigation history
+				navigationHistory.get(navigationHistory.size() - 1).getHelp();
+				break;
+			case "back":
+				if(navigationHistory.size() != 1)
+				{
+					navigationHistory.remove(navigationHistory.size() - 1);
+				}else {
+					InputHelper helper = InputHelper.getInputHelper();
+					Boolean badInput = true;
+					do {
+						System.out.println("You are at the root, would you like to exit? Y or N");
+						String input = helper.getInput();
+						if(input.equals("Y"))
+						{
+							System.out.println("Goodbye!");
+							//helper.closeScanner();
+							throw new ExitingException("Exiting Application");
+						} else if (input.equals("N")) {
+							badInput = false;
+						}
+					}while(badInput);
+				}
+				break;
+			case "trail":
+				StringBuilder sb = new StringBuilder("[application start]");
+				for(Menu m : navigationHistory) {
+					sb.append(" > "+ m.getName());
+				}
+				System.out.println(sb.toString());
+				break;
+			case "home":
+				//remove from history in reverse order until you reach either User Home or Super User Home
+				break;
+			case "exit":
+				System.out.println("Goodbye!");
+				throw new ExitingException("Exiting Application");
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	protected boolean tooManyArguments(String command, Integer maxArguments) {
+		String[] split = command.split(" ");
+		
+		if(split.length > maxArguments) {
+			//Too many arguments exception?
+			return true;
+		}
+		return false;
+	}
+	
+	public abstract String getName();
+	public void getHelp() {
+		System.out.println(Menu.help);
+	}
+	
+	
+}
