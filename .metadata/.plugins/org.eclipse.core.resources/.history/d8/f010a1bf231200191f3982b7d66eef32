@@ -1,0 +1,170 @@
+package banking.menus.standard_user;
+
+import banking.Application;
+import banking.InputHelper;
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+import banking.model.User;
+
+public class EditUserInfoMenu extends Menu {
+	protected String commands ="(edit-(((first|last)-name)|password|(phone-number)))";
+	private static Menu menu = null;
+	private Integer maxArguments = 2;
+	private static String name = "Edit User";
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+				+ "This is your Edit User menu. Here you can change your user information.\n"
+				+ "\nCOMMANDS\n"
+				+ "edit-first-name [first name]: allows the user to change their first name.\n"
+				+ "edit-last-name  [last name]: allows the user to change their last name.\n"
+				+ "edit-password [password]: allows the user to change their password. (will be prompted to confirm password)\n"
+				+ "edit-phone-numner [phone number]: allows the user to change their phone number\n"
+				+ "----------------";
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new EditUserInfoMenu();
+		}
+		return menu;
+	}
+	
+	private EditUserInfoMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				//ALL DAO STUFF
+				case "edit-first-name":
+					
+					break;
+				case "edit-last-name":
+					break;
+				case "edit-password":
+					break;
+				case "edit-phone-number":
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+	
+	public void validFirstName() {
+		boolean incomplete = true;
+		User u = Application.currentUser;
+		String input;		
+		do {
+			System.out.println("Please enter your new first name : ");
+			input = InputHelper.getInputHelper().getInput();
+
+			if(input.equals("")) {
+				System.out.println("Your name can not be empty");
+				continue;
+			}
+			
+			if(input.toLowerCase().equals(u.getFirstName().toLowerCase()))
+			{
+				System.out.println("Your first name is already " + input);
+				continue;
+			}
+			
+			do {
+				System.out.println("Do you want to change your first name to " + input + "? : Y / N");
+				String confirm = InputHelper.getInputHelper().getInput();
+				if(confirm.toUpperCase().equals("Y")) {
+					incomplete = false;
+					break;
+				} else if(confirm.toUpperCase().equals("N")) {
+					incomplete = true;
+					break;
+				}
+			}while(true);
+		}while (incomplete);
+		
+		Application.bankingService.updateFirstName(u.getUserID(), input);
+	}
+	
+	public void validLastName() {
+		boolean incomplete = true;
+		User u = Application.currentUser;
+		String input;		
+		do {
+			System.out.println("Please enter your new last name : ");
+			input = InputHelper.getInputHelper().getInput();
+
+			if(input.equals("")) {
+				System.out.println("Your last name can not be empty");
+				continue;
+			}
+			
+			if(input.toLowerCase().equals(u.getLastName().toLowerCase()))
+			{
+				System.out.println("Your last name is already " + input);
+				continue;
+			}
+			
+			do {
+				System.out.println("Do you want to change your last name to " + input + "? : Y / N");
+				String confirm = InputHelper.getInputHelper().getInput();
+				if(confirm.toUpperCase().equals("Y")) {
+					incomplete = false;
+					break;
+				} else if(confirm.toUpperCase().equals("N")) {
+					incomplete = true;
+					break;
+				}
+			}while(true);
+		}while (incomplete);
+		
+		Application.bankingService.updateLastName(u.getUserID(), input);
+	}
+	
+	public void validPassword() {
+		String pass;
+		String passConfirm;
+		do {
+			System.out.println("\nPlease enter a password.");
+			pass = InputHelper.getInputHelper().getInput();
+			
+			if(pass.length() < 8) {
+				errors.append("Password is too short");
+			}
+			System.out.println("\nPlease confirm your password.");
+			passConfirm = InputHelper.getInputHelper().getInput();
+			if(!password.equals(passConfirm)){
+				System.out.println("\nPasswords do not match");
+			}
+		}while(password.equals("") || !password.equals(passConfirm));
+	}
+	
+	public void validPhoneNumber() {
+		
+	}
+}

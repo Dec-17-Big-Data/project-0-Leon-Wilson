@@ -2,7 +2,11 @@ package banking.menus;
 
 
 
+import banking.Application;
+import banking.DAO.BankingDAO;
+import banking.Services.BankingService;
 import banking.exceptions.ExitingException;
+import banking.menus.standard_user.HomeMenu;
 
 public class SignInMenu extends Menu {
 	private String commands ="(sign-(in(-admin)?|up))";
@@ -44,16 +48,19 @@ public class SignInMenu extends Menu {
 					break;
 				case "sign-in":
 					//DAO STUFF
+					Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]);
+					Menu.navigationHistory.add(HomeMenu.getMenu());
 					break;
 				case "sign-up":
 					Menu.navigationHistory.add(NewUserMenu.getMenu());
 					break;
+				default :
+					return false;
 				}
 				return true;
 			}
 			return false;
 		}
-		
 		return true;
 	}
 	

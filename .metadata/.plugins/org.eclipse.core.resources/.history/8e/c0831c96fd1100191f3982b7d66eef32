@@ -1,0 +1,41 @@
+package banking.menus.standard_user;
+
+import banking.menus.Menu;
+
+public class AccountsMenu extends Menu {
+	protected String commands ="(((delete|add|access|display)-account(-list)?)|transfer)";
+	private static String name = "Accounts";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+				+ "This is your User home menu. Here you can view your information and access your accounts.\n"
+				+ "\nCOMMANDS\n"
+				+ "display-user-info : shows the users information on the screen.\n"
+				+ "edit-user-info : navigates to the edit user menu, where you can update your user info.\n"
+				+ "access-account-list: navigates to the accounts menu for the specified account.\n"
+				+ "----------------";
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new AccountsMenu();
+		}
+		return menu;
+	}
+	
+	private AccountsMenu() {
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+}

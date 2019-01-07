@@ -1,0 +1,98 @@
+package banking.menus.standard_user;
+
+import banking.Application;
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+import banking.model.Account;
+import banking.model.User;
+
+public class SingleAccountMenu extends Menu {
+	protected String commands ="((display-(account-summary|(all|pending|posted)?-transactions|balance)|withdraw|deposit))";
+	private static String name = "Individual Account";
+	private Integer maxArguments = 2;
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+				+ "This is your Individual Account menu. Here you can view the accounts details as well deposit or withdrawl money\n"
+				+ "\nCOMMANDS\n"
+				+ "display-account-summary : accounts information on the screen.\n"
+				+ "withdraw [amount] : deletes the specified account. (account must have a 0 balance in order to be deleted)\n"
+				+ "add-account [amount]: goes through the account creation process.\n"
+				+ "access-account [account id] : navigates to the requested account's page\n"
+				+ "----------------";
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new SingleAccountMenu();
+		}
+		return menu;
+	}
+	
+	private SingleAccountMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				//ALL DAO STUFF
+				case "display-account-summary":
+					displayAccountList();
+					break;
+				case "withdraw":
+					break;
+				case "deposit":
+					Menu.navigationHistory.add(SingleAccountMenu.getMenu());
+					break;
+				case "display-balance":
+					
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public void withdraw() {
+		
+	}
+	
+	public void deposit() {
+		
+	}
+	
+	public void displayAccountList() {
+		User u = Application.currentUser;
+		for(Account a : u.getAccounts()) {
+			System.out.println("\nAccount ID : " + a.getAccountID() + "\n"
+					+ "Name : " + a.getAccountName() + "\n"
+					+ "Type : " + a.getType() + "\n"
+					+ "Balance : " + a.getBalance()+"\n");
+		}
+	}
+	
+	public void displayBalance() {
+		
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		System.out.println(help);
+	}
+}

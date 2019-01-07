@@ -1,0 +1,33 @@
+package banking.Services;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import banking.DAO.BankingDAO;
+import banking.DAO.BankingOracle;
+import banking.model.User;
+
+public class BankingService {
+	private static BankingService bankingService = null;
+	final static BankingDAO bankingDAO = BankingOracle.getDAO();
+	
+	public static BankingService getService() {
+		if(bankingService == null) {
+			bankingService = new BankingService();
+		}
+		return bankingService;
+	}
+	
+	private BankingService() {
+		
+	}
+	
+	public Optional<List<User>> getAllUsers(){
+		return bankingDAO.getAllUsers();
+	}
+	
+	public Optional<User> signInUser(String username, String password){
+		return bankingDAO.signInUser(username, password)
+	}
+}

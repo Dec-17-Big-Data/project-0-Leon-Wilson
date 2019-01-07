@@ -1,5 +1,6 @@
 package banking.DAO;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +9,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import banking.Application;
 import banking.ConnectionUtil;
 import banking.model.Account;
+import banking.model.AccountTypes;
 import banking.model.ChargeCard;
 import banking.model.ErrorLogs;
 import banking.model.SuperUser;
@@ -65,7 +69,69 @@ public class BankingOracle implements BankingDAO {
 
 	@Override
 	public Optional<User> signInUser(String username, String password) {
-		// TODO Auto-generated method stub
+		User user;
+		Set<Account> usersAccounts = new HashSet<Account>();
+		Connection con = ConnectionUtil.getConnection();
+		CallableStatement callableStatement = null;
+		String sql = "{call SIGN_IN_USER(?,?,?,?,?,?)}";
+		
+		
+		if(con == null) {
+			return Optional.empty();
+		}
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setString(1, username);
+			callableStatement.setString(2, password);
+			callableStatement.registerOutParameter(3, java.sql.Types.INTEGER);
+			callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+			callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
+			callableStatement.registerOutParameter(6, java.sql.Types.VARCHAR);
+			
+			callableStatement.executeUpdate();
+			
+			Integer userID = callableStatement.getInt(3);
+			String firstName = callableStatement.getString(4);
+			String lastName = callableStatement.getString(5);
+			String phoneNumber = callableStatement.getString(6);
+			
+			String accountSQL = "select * from accounts where user_id = ?";
+			Connection con2 = ConnectionUtil.getConnection();
+			
+			PreparedStatement ps = con2.prepareStatement(accountSQL);
+			ps.setInt(1, userID);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				/*String name, Integer accountID, Integer userID, 
+				 * AccountTypes type, Double balance, List<Transaction> pendingTransactions, 
+				 * List<Transaction> transactionHistory
+				*/
+				AccountTypes type;
+				switch(rs.getString("account_type")) {
+				case "checking":
+					type = AccountTypes.checking;
+					break;
+				case "savings":
+					type = AccountTypes.savings;
+					break;
+				default:
+					type = null;
+					break;
+				}
+				usersAccounts.add(new Account(rs.getString("account_name"),rs.getInt("account_id"),rs.getInt("user_id"), type, rs.getDouble("balance"), new ArrayList<Transaction>(), new ArrayList<Transaction>()));
+				
+				//System.out.println(rs.getInt("account_id")+ " " +rs.getInt("user_id")+ " " +rs.getString("account_type")+ " " +rs.getFloat("balance")+ " " +rs.getString("account_name"));
+			}
+			user = new User(userID, firstName,lastName,username, phoneNumber,password, usersAccounts,new HashSet<ChargeCard>());
+			Application.currentUser = user;
+			//System.out.println(user.toString());
+			return Optional.of(user);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
@@ -124,21 +190,126 @@ public class BankingOracle implements BankingDAO {
 	}
 
 	@Override
-	public boolean deposit(Integer accountID, Double amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean withdrawl(Integer accountID, Double amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public Optional<List<ErrorLogs>> getErrors(Integer threshold) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean updateBalance(Integer accountID, Double balance) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_ACCOUNT_BALANCE(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, accountID);
+			callableStatement.setDouble(2, balance);
+			
+			callableStatement.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateFirstName(Integer userID, String firstName) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_FIRST_NAME(?,?)}";
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, firstName);
+			
+			callableStatement.executeUpdate();
+			
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean updateLastName(Integer userID, String lastName) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_LAST_NAME(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, lastName);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updatePhoneNumber(Integer userID, String phoneNumber) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_PHONE_NUMBER(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, phoneNumber);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updatePassword(Integer userID, String userPassword) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_PASSWORD(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, userPassword);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
 	}
 
 }

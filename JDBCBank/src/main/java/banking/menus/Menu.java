@@ -3,6 +3,7 @@ package banking.menus;
 import java.util.ArrayList;
 import java.util.List;
 
+import banking.Application;
 import banking.InputHelper;
 import banking.exceptions.ExitingException;
 
@@ -15,7 +16,7 @@ public abstract class Menu {
 	}
 	
 	//HELP SCREEN
-	final static String help = "\nGLOBAL COMMANDS HELPER\n"
+	protected final static String help = "\nGLOBAL COMMANDS HELPER\n"
 			+ "These are the commands available to you on any page of the application\n"
 			+ "\nCOMMANDS\n"
 			+ "sign-out : signs the current user out of the application and returns to the Sign In screen.\n"
@@ -41,6 +42,7 @@ public abstract class Menu {
 			case "sign-out":
 				//If there is a currently logged in user, return them to null?
 				navigationHistory.removeIf(m -> m.getName() != "Sign In");
+				Application.currentUser = null;
 				break;
 			case "help":
 				//call the help method on the last item added to the navigation history
@@ -68,11 +70,7 @@ public abstract class Menu {
 				}
 				break;
 			case "trail":
-				StringBuilder sb = new StringBuilder("[application start]");
-				for(Menu m : navigationHistory) {
-					sb.append(" > "+ m.getName());
-				}
-				System.out.println(sb.toString());
+				getTrail();
 				break;
 			case "home":
 				//remove from history in reverse order until you reach either User Home or Super User Home
@@ -101,6 +99,14 @@ public abstract class Menu {
 	public abstract String getName();
 	public void getHelp() {
 		System.out.println(Menu.help);
+	}
+	
+	public void getTrail() {
+		StringBuilder sb = new StringBuilder("\n[application start]");
+		for(Menu m : navigationHistory) {
+			sb.append(" > "+ m.getName());
+		}
+		System.out.println(sb.toString());
 	}
 	
 	

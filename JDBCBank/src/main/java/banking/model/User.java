@@ -6,15 +6,24 @@ import java.util.Set;
 
 public class User {
 
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
+				+ username + ", phoneNumber=" + phoneNumber + ", password=" + password + ", accounts=" + accounts
+				+ ", cards=" + cards + "]";
+	}
+
 	//List of accounts
 	private Integer userID;
 	private String firstName;
 	private String lastName;
 	private String username;
 	private String phoneNumber;
-	private String password; //encrypt?
+	private String password;
 	private Set<Account> accounts;
 	private Set<ChargeCard> cards;
+	
+	private static Account accessedAccount;
 	
 //---CONSTRUCTORS---//
 	
@@ -215,6 +224,14 @@ public class User {
 
 	public void setCards(Set<ChargeCard> cards) {
 		this.cards = cards;
+	}
+
+	public static Account getAccessedAccount() {
+		return accessedAccount;
+	}
+
+	public static void setAccessedAccount(Account accessedAccount) {
+		User.accessedAccount = accessedAccount;
 	}
 	
 }

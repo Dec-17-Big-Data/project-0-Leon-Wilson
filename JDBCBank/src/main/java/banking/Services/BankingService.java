@@ -26,4 +26,28 @@ public class BankingService {
 	public Optional<List<User>> getAllUsers(){
 		return bankingDAO.getAllUsers();
 	}
+	
+	public Optional<User> signInUser(String username, String password){
+		return bankingDAO.signInUser(username, password);
+	}
+	
+	public boolean updateBalance(Integer accountID, Double balance) {
+		return bankingDAO.updateBalance(accountID, balance);
+	}
+	
+	public boolean updateFirstName(Integer userID, String firstName) {
+		return bankingDAO.updateFirstName(userID, firstName);
+	}
+	
+	public boolean updateLastName(Integer userID, String lastName) {
+		return bankingDAO.updateLastName(userID, lastName);
+	}
+	
+	public boolean updatePhoneNumber(Integer userID, String phoneNumber) {
+		return bankingDAO.updatePhoneNumber(userID, phoneNumber);
+	}
+	
+	public boolean updatePassword(Integer userID, String userPassword) {
+		return bankingDAO.updatePassword(userID, userPassword);
+	}
 }

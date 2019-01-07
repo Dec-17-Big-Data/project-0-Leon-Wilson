@@ -11,6 +11,10 @@ public interface BankingDAO {
 	//--USERS--//
 	Optional<User> signInUser(String username, String password);
 	boolean signUpUser(User user);
+	boolean updateFirstName(Integer userID, String firstName);
+	boolean updateLastName(Integer userID, String lastName);
+	boolean updatePhoneNumber(Integer userID, String phoneNumber);
+	boolean updatePassword(Integer userID, String userPassword);
 	
 	//--ACCOUNTS--//
 	Optional<List<Account>> getUsersAccounts(Integer userID);
@@ -33,9 +37,7 @@ public interface BankingDAO {
 	boolean transfer();
 	
 	//--DEPOSITS & WITHDRAWLS--//
-	boolean deposit(Integer accountID, Double amount);
-	boolean withdrawl(Integer accountID, Double amount);
-	
+	boolean updateBalance(Integer accountID, Double balance);
 	
 	//--ERRORS--//
 	Optional<List<ErrorLogs>> getErrors(Integer threshold);
