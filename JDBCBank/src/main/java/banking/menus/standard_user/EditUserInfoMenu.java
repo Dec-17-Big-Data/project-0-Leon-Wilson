@@ -9,17 +9,17 @@ import banking.model.User;
 public class EditUserInfoMenu extends Menu {
 	protected String commands ="(edit-(((first|last)-name)|password|(phone-number)))";
 	private static Menu menu = null;
-	private Integer maxArguments = 2;
+	private Integer maxArguments = 1;
 	private static String name = "Edit User";
 	
 	//HELP SCREEN
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
 				+ "This is your Edit User menu. Here you can change your user information.\n"
 				+ "\nCOMMANDS\n"
-				+ "edit-first-name [first name]: allows the user to change their first name.\n"
-				+ "edit-last-name  [last name]: allows the user to change their last name.\n"
-				+ "edit-password [password]: allows the user to change their password. (will be prompted to confirm password)\n"
-				+ "edit-phone-numner [phone number]: allows the user to change their phone number\n"
+				+ "edit-first-name : takes you throw the process of changing your first name.\n"
+				+ "edit-last-name : takes you through the process of changing your last name.\n"
+				+ "edit-password : takes you through the process of changing your password. (will be prompted to confirm password)\n"
+				+ "edit-phone-numner : takes you through the process of changing your phone number.\n"
 				+ "----------------";
 	
 	public static Menu getMenu() {
@@ -90,34 +90,14 @@ public class EditUserInfoMenu extends Menu {
 
 			if(input.equals("")) {
 				System.out.println("Your name can not be empty");
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
 			if(input.toLowerCase().equals(u.getFirstName().toLowerCase()))
 			{
 				System.out.println("Your first name is already " + input);
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
@@ -129,25 +109,16 @@ public class EditUserInfoMenu extends Menu {
 					break;
 				} else if(confirm.toUpperCase().equals("N")) {
 					incomplete = true;
-					do {
-						System.out.println("Would you like to cancel? Y / N");
-						String conf2 = InputHelper.getInputHelper().getInput();
-						if(conf2.toUpperCase().equals("Y")) {
-							cancel = true;
-							break;
-						} else if(conf2.toUpperCase().equals("N")) {
-							cancel = false;
-							break;
-						}
-					} while(true);
+					cancel = InputHelper.getInputHelper().cancelInput();
 					break;
 				}
 			}while(true);
 		}while (incomplete && !cancel);
 		
 		if(!cancel) {
-			u.setFirstName(input);
-			Application.bankingService.updateFirstName(u.getUserID(), input);
+			if(Application.bankingService.updateFirstName(u.getUserID(), input)) {
+				u.setFirstName(input);				
+			}
 		} else {
 			System.out.println("Cancelled first name edit.");
 		}
@@ -164,34 +135,14 @@ public class EditUserInfoMenu extends Menu {
 
 			if(input.equals("")) {
 				System.out.println("Your last name can not be empty");
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
 			if(input.toLowerCase().equals(u.getLastName().toLowerCase()))
 			{
 				System.out.println("Your last name is already " + input);
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
@@ -203,24 +154,15 @@ public class EditUserInfoMenu extends Menu {
 					break;
 				} else if(confirm.toUpperCase().equals("N")) {
 					incomplete = true;
-					do {
-						System.out.println("Would you like to cancel? Y / N");
-						String conf2 = InputHelper.getInputHelper().getInput();
-						if(conf2.toUpperCase().equals("Y")) {
-							cancel = true;
-							break;
-						} else if(conf2.toUpperCase().equals("N")) {
-							cancel = false;
-							break;
-						}
-					} while(true);
+					cancel = InputHelper.getInputHelper().cancelInput();
 					break;
 				}
 			}while(true);
 		}while (incomplete && !cancel);
 		if(!cancel) {
-			u.setLastName(input);
-			Application.bankingService.updateLastName(u.getUserID(), input);
+			if(Application.bankingService.updateLastName(u.getUserID(), input)) {
+				u.setLastName(input);				
+			}
 		} else {
 			System.out.println("Cancelled last name edit.");
 		}
@@ -244,17 +186,7 @@ public class EditUserInfoMenu extends Menu {
 			if(pass.equals(u.getPassword()))
 			{
 				System.out.println("You are already using that password");
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
@@ -273,25 +205,16 @@ public class EditUserInfoMenu extends Menu {
 					break;
 				} else if(confirm.toUpperCase().equals("N")) {
 					incomplete = true;
-					do {
-						System.out.println("Would you like to cancel? Y / N");
-						String conf2 = InputHelper.getInputHelper().getInput();
-						if(conf2.toUpperCase().equals("Y")) {
-							cancel = true;
-							break;
-						} else if(conf2.toUpperCase().equals("N")) {
-							cancel = false;
-							break;
-						}
-					} while(true);
+					cancel = InputHelper.getInputHelper().cancelInput();
 					break;
 				}
 			}while(true);
 		}while(incomplete && !cancel);
 		
 		if(!cancel) {
-			u.setPassword(pass);
-			Application.bankingService.updatePassword(u.getUserID(), pass);
+			if(Application.bankingService.updatePassword(u.getUserID(), pass)) {
+				u.setPassword(pass);
+			}
 		}else {
 			System.out.println("Cancelled password edit.");
 		}
@@ -307,17 +230,7 @@ public class EditUserInfoMenu extends Menu {
 			phone = InputHelper.getInputHelper().getInput();
 			if(phone.equals("")) {
 				System.out.println("Phone number can not be empty");
-				do {
-					System.out.println("Would you like to cancel? Y / N");
-					String conf2 = InputHelper.getInputHelper().getInput();
-					if(conf2.toUpperCase().equals("Y")) {
-						cancel = true;
-						break;
-					} else if(conf2.toUpperCase().equals("N")) {
-						cancel = false;
-						break;
-					}
-				} while(true);
+				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			} else if(!phone.matches("([0-9]{3}-[0-9]{3}-[0-9]{4})")) {
 				System.out.println("Invalid phone number entered. Please use the format ###-###-####");
@@ -332,25 +245,16 @@ public class EditUserInfoMenu extends Menu {
 					break;
 				} else if(confirm.toUpperCase().equals("N")) {
 					incomplete = true;
-					do {
-						System.out.println("Would you like to cancel? Y / N");
-						String conf2 = InputHelper.getInputHelper().getInput();
-						if(conf2.toUpperCase().equals("Y")) {
-							cancel = true;
-							break;
-						} else if(conf2.toUpperCase().equals("N")) {
-							cancel = false;
-							break;
-						}
-					} while(true);
+					cancel = InputHelper.getInputHelper().cancelInput();
 					break;
 				}
 			}while(true);
 		}while(incomplete && !cancel);
 		
 		if(!cancel) {
-			u.setPhoneNumber(phone);
-			Application.bankingService.updatePhoneNumber(u.getUserID(), phone);
+			if(Application.bankingService.updatePhoneNumber(u.getUserID(), phone)){
+				u.setPhoneNumber(phone);
+			}
 		} else {
 			System.out.println("Cancelled phone number edit.");
 		}

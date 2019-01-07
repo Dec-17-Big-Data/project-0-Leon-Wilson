@@ -1,9 +1,17 @@
 package banking.menus.standard_user;
 
+import org.apache.logging.log4j.core.pattern.NotANumber;
+
 import banking.Application;
+import banking.InputHelper;
 import banking.exceptions.ExitingException;
+import banking.exceptions.InvalidValueException;
+import banking.exceptions.account_exceptions.AccountDoesntExistException;
+import banking.exceptions.account_exceptions.NonEmptyAccountException;
+import banking.exceptions.sign_in_exceptions.NonexistantUserException;
 import banking.menus.Menu;
 import banking.model.*;
+import oracle.net.aso.u;
 
 public class AccountsMenu extends Menu {
 	protected String commands ="(((delete|add|access|display)-account(-list)?)|transfer)";
@@ -47,8 +55,18 @@ public class AccountsMenu extends Menu {
 					displayAccountList();
 					break;
 				case "delete-account":
+					try {
+						deleteAccount(new Integer(command.split(" ")[1]));
+					}catch(AccountDoesntExistException e) {
+						System.out.println("\nCouldn't find account.");
+					}catch (NonEmptyAccountException e) {
+						System.out.println("\nYou can not delete an account unless it is empty.");
+					} catch (NumberFormatException e) {
+						System.out.println("\n not a valid number.");
+					}
 					break;
 				case "add-account":
+					addAccountSetup();
 					break;
 				case "access-account":
 					for(Account a : Application.currentUser.getAccounts()) {
@@ -76,6 +94,135 @@ public class AccountsMenu extends Menu {
 			System.out.println("\nAccount ID : " + a.getAccountID() + "\n"
 					+ "Name : " + a.getAccountName() +"\n");
 		}
+	}
+	
+	public void addAccountSetup() {
+		boolean incomplete = true, cancelled = false;
+		User u = Application.currentUser;
+		String accountName = "";
+		AccountTypes accountType = null;
+		Double accountBalance = 0.00;
+		do {
+			//ACCOUNT NAME
+			do {
+				if(cancelled) break;
+				System.out.println("Please enter your accounts name");
+				boolean name_found = false;
+				String input = InputHelper.getInputHelper().getInput();
+				
+				if(input.equals(""))
+				{
+					System.out.println("Account name cannot be empty");
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					continue;
+				}
+				for(Account a : u.getAccounts()) {
+					if(a.getAccountName().equals(input)) {
+						name_found = true;
+					}
+				}
+				
+				if(name_found) {
+					System.out.println("You already have an account with the name : " + input);
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					continue;
+				}
+				
+				accountName = input;
+				break;
+			}while(true);
+			
+			//ACCOUNT TYPE
+			do {
+				if(cancelled) break;
+				System.out.println("Please enter your account type \n ACCOUNT TYPES \n checking \n savings");
+				String input = InputHelper.getInputHelper().getInput();
+				boolean unknownType = false;
+				if(input.equals("")) {
+					System.out.println("Your account type cannot be empty");
+				}
+				
+				switch(input.toLowerCase()) {
+				case "checking":
+					accountType = AccountTypes.checking;
+					break;
+				case "savings":
+					accountType = AccountTypes.savings;
+					break;
+				default:
+					unknownType = true;
+					break;
+				}
+				
+				if(unknownType) {
+					System.out.println("Type of account " + input + " unknown");
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					continue;
+				}
+				break;
+			}while(true);
+			
+			//ACCOUNT BALANCE
+			do {	
+				if(cancelled) break;
+				try {
+					System.out.println("Please enter your initial balance (Initial balance can only be whole dollar amounts)");
+					String input = InputHelper.getInputHelper().getInput();
+					
+					if(input.matches("[^0-9]")) {
+						 throw new InvalidValueException();
+					}
+					
+					accountBalance = Double.valueOf(input);
+					//STOPPING POINT
+				} catch(InvalidValueException e) {
+					System.out.println("Value given is not valid");
+					continue;
+				}
+				break;
+			}while(true);
+			
+			do {
+				System.out.println("Account name : " + accountName + "\n" +
+						"Account type : " + accountType + "\n" +
+						"Initial balance : " + accountBalance);
+				System.out.println("Please confirm creation : Y / N");
+				String confirm = InputHelper.getInputHelper().getInput();
+				if(confirm.toUpperCase().equals("Y")) {
+					incomplete = false;
+					break;
+				} else if(confirm.toUpperCase().equals("N")) {
+					incomplete = true;
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					break;
+				}
+			}while(true);
+		}while(incomplete && !cancelled);
+		
+		if(!cancelled) {
+			if(Application.bankingService.addNewAccount(u.getUserID(), accountType, accountBalance, accountName)) {
+				
+			}
+		}
+	}
+	
+	public void deleteAccount(Integer accountID) throws NonEmptyAccountException, AccountDoesntExistException {
+		User u = Application.currentUser;
+		for(Account a : u.getAccounts()) {
+			if(a.getAccountID().equals(accountID)) {
+				if(a.getBalance() == 0) {
+					if(Application.bankingService.deleteAccount(accountID)) {
+						u.getAccounts().remove(a);
+						return;
+					}
+					break;
+				} else {
+					throw new NonEmptyAccountException();
+				}
+			}
+		}
+		
+		throw new AccountDoesntExistException();
 	}
 	
 	@Override

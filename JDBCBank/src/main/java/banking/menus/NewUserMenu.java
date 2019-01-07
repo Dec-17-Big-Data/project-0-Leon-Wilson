@@ -1,7 +1,11 @@
 package banking.menus;
 
+import java.util.NoSuchElementException;
+
+import banking.Application;
 import banking.InputHelper;
 import banking.exceptions.ExitingException;
+import banking.menus.standard_user.HomeMenu;
 
 public class NewUserMenu extends Menu {
 	protected String commands ="create";
@@ -60,7 +64,7 @@ public class NewUserMenu extends Menu {
 	}
 	
 	public void creationProcess() {
-		Boolean incomplete = true;
+		Boolean incomplete = true, cancelled = false;
 		Integer userID;
 		String firstName = "";
 		String lastName = "";
@@ -70,6 +74,7 @@ public class NewUserMenu extends Menu {
 		String passConfirm = "";
 		
 		do {
+			if(cancelled) break;
 			//FIRST NAME
 			if(!firstName.equals("")) {
 				//prompt for re-enter
@@ -162,7 +167,35 @@ public class NewUserMenu extends Menu {
 			}while(password.equals("") || !password.equals(passConfirm));
 			
 			incomplete = !validateInfo(firstName,lastName,username,phoneNumber,password,passConfirm);
-		} while (incomplete);
+			if(incomplete) {
+				cancelled = InputHelper.getInputHelper().cancelInput();
+			}
+		} while (incomplete && !cancelled);
+		
+		
+		if(!cancelled) {
+			if(Application.bankingService.createNewUser(firstName, lastName, username, phoneNumber, password)){
+				//possible try / catch?
+				try {
+					Application.currentUser = Application.bankingService.signInUser(username, password).get();
+					try {
+						Menu.navigationHistory.get(Menu.navigationHistory.size() - 1).parseCommand("back");
+						Menu.navigationHistory.add(HomeMenu.getMenu());
+					} catch (ExitingException e1) {
+						System.out.println("THIS SHOULDN'T BE POSSIBLE!!!");
+					}
+				} catch (NoSuchElementException e) {
+					System.out.println("Your account was created but we couldn't log you in automatically. Returning to sign in page.");
+					try {
+						Menu.navigationHistory.get(Menu.navigationHistory.size() - 1).parseCommand("back");
+					} catch (ExitingException e1) {
+						System.out.println("THIS SHOULDN'T BE POSSIBLE!!!");
+					}
+					
+				}
+			}
+		}
+		//DAO STUFF
 	}
 	
 	public boolean validateInfo(String first, String last, String user, String phone, String pass, String confirm) {
@@ -189,13 +222,15 @@ public class NewUserMenu extends Menu {
 			errors.append("Password is too short");
 		}
 		
+		//DAO VALIDATION
+		if(!Application.bankingService.checkUsernameAvailability(user)) {
+			errors.append("Username already exist. Please choose a new username");
+		}
+		
 		if(!errors.toString().equals("Errors Found:")){
 			System.out.println(errors.toString());
 			return false;
 		}
-		
-		//DAO VALIDATION
-		
 		return true;
 	}
 }

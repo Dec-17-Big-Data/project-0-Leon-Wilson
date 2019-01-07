@@ -142,8 +142,8 @@ public class User {
 	/***
 	 * @author Leon Wilson
 	 */
-	public void addAccount(String name, AccountTypes type, Double initialBalance) {
-		
+	public void addAccount(Account a) {
+		this.accounts.add(a);
 	}
 	
 	/***

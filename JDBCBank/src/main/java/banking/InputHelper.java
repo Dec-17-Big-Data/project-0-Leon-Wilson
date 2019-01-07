@@ -25,6 +25,18 @@ public class InputHelper {
 		return scanner.nextLine();
 	}
 	
+	public boolean cancelInput() {
+		do {
+			System.out.println("Would you like to cancel? Y / N");
+			String conf2 = getInput();
+			if(conf2.toUpperCase().equals("Y")) {
+				return true;
+			} else if(conf2.toUpperCase().equals("N")) {
+				return false;
+			}
+		} while(true);
+	}
+	
 	public void closeScanner() {
 		if(scanner != null) {
 			scanner.close();

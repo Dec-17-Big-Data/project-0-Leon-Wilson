@@ -2,6 +2,8 @@ package banking.menus;
 
 
 
+import java.util.NoSuchElementException;
+
 import banking.Application;
 import banking.DAO.BankingDAO;
 import banking.Services.BankingService;
@@ -48,7 +50,11 @@ public class SignInMenu extends Menu {
 					break;
 				case "sign-in":
 					//DAO STUFF
-					Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]);
+					try {
+					Application.currentUser = Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]).get();
+					} catch(NoSuchElementException e) {
+						System.out.println("Couldn't sign in. Please check credentials and try again");
+					}
 					Menu.navigationHistory.add(HomeMenu.getMenu());
 					break;
 				case "sign-up":

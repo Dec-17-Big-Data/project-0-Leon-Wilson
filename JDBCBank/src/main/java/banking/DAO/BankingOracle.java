@@ -13,6 +13,8 @@ import java.util.Set;
 
 import banking.Application;
 import banking.ConnectionUtil;
+import banking.exceptions.sign_up_exceptions.UsernameAlreadyExistException;
+import banking.menus.Menu;
 import banking.model.Account;
 import banking.model.AccountTypes;
 import banking.model.ChargeCard;
@@ -125,11 +127,11 @@ public class BankingOracle implements BankingDAO {
 				//System.out.println(rs.getInt("account_id")+ " " +rs.getInt("user_id")+ " " +rs.getString("account_type")+ " " +rs.getFloat("balance")+ " " +rs.getString("account_name"));
 			}
 			user = new User(userID, firstName,lastName,username, phoneNumber,password, usersAccounts,new HashSet<ChargeCard>());
-			Application.currentUser = user;
+			//MIGH UNDO //Application.currentUser = user;
 			//System.out.println(user.toString());
 			return Optional.of(user);
 		}catch(SQLException e) {
-			e.printStackTrace();
+			System.out.println("Couldn't sign in user");
 		}
 		
 		return null;
@@ -310,6 +312,131 @@ public class BankingOracle implements BankingDAO {
 			
 		}
 		return false;
+	}
+
+	@Override
+	public boolean createNewAccount(Integer userID, AccountTypes type, Double balance, String accountName) {
+		Connection con = ConnectionUtil.getConnection();
+		User u = Application.currentUser;
+		if(con == null) {
+			return false;
+		}
+		
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call ADD_ACCOUNT(?,?,?,?,?)}";
+		String t;
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			switch(type) {
+			case checking:
+				t = "checking";
+				break;
+			case savings:
+				t = "savings";
+				break;
+			default:
+				t = "";
+				break;
+			}
+			
+			if(t == "") {
+				//throw exception
+			}
+			
+			callableStatement.setString(2, t);
+			callableStatement.setDouble(3, balance);
+			callableStatement.setString(4, accountName);
+			callableStatement.registerOutParameter(5,java.sql.Types.INTEGER);
+			
+			callableStatement.executeUpdate();
+			Integer accountID = callableStatement.getInt(5);
+			//String name, Integer accountID, Integer userID, AccountTypes type, Double startingBalance
+			u.addAccount(new Account(accountName, accountID, userID, type, balance));
+			return true;
+			
+		} catch(SQLException e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean deleteExistingAccount(Integer accountID) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call REMOVE_ACCOUNT(?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, accountID);
+			
+			callableStatement.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean createNewUser(String firstName, String lastName, String username,String phoneNumber, String password) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call ADD_USER(?,?,?,?,?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setString(1,firstName);
+			callableStatement.setString(2,lastName);
+			callableStatement.setString(3,username);
+			callableStatement.setString(4,phoneNumber);
+			callableStatement.setString(5,password);
+			callableStatement.registerOutParameter(6,java.sql.Types.INTEGER);
+
+			callableStatement.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean checkUsernameAvailability(String username) {
+		Connection con = ConnectionUtil.getConnection();
+
+		if (con == null) {
+			return false;
+		}
+
+		try {
+			String sql = "select * from users where username = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.isBeforeFirst()) {
+				throw new UsernameAlreadyExistException();
+			}
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("There was a problem when attempting to connect to the database.");
+			return false;
+		} catch (UsernameAlreadyExistException e) {
+			System.out.println("That username already exist");
+			return false;
+		}
 	}
 
 }
