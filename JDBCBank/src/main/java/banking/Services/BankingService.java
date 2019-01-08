@@ -32,6 +32,10 @@ public class BankingService {
 		return bankingDAO.signInSuperUser(username, password);
 	}
 	
+	public Optional<User> getUser(Integer userID){
+		return bankingDAO.getUser(userID);
+	}
+	
 	public Optional<User> signInUser(String username, String password){
 		return bankingDAO.signInUser(username, password);
 	}
@@ -89,5 +93,9 @@ public class BankingService {
 	
 	public boolean addSuperUser(String username, String password) {
 		return bankingDAO.addSuperUser(username, password);
+	}
+	
+	public boolean deleteUser(Integer userID) {
+		return bankingDAO.deleteUser(userID);
 	}
 }

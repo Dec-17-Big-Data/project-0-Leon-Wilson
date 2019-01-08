@@ -34,7 +34,7 @@ public class NewUserMenu extends Menu {
 	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			if(tooManyArguments(command,maxArguments)) {
-				System.out.println("");
+				System.out.println("Too many arguments provided");
 				return false;
 			}
 			
@@ -43,10 +43,20 @@ public class NewUserMenu extends Menu {
 				switch(command.split(" ")[0]) {
 				case "create":
 					//WALK THROUGH PROCESS
-					creationProcess();
+					if(!creationProcess()) {
+						System.out.println("\nNew user not created");
+						return false;
+					} else {
+						System.out.println("\nNew user created");
+					}
 					break;
+				default :
+					System.out.println("\nSyntax error.");
+					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
@@ -63,7 +73,7 @@ public class NewUserMenu extends Menu {
 		System.out.println(help);
 	}
 	
-	public void creationProcess() {
+	public boolean creationProcess() {
 		Boolean incomplete = true, cancelled = false;
 		Integer userID;
 		String firstName = "";
@@ -182,24 +192,32 @@ public class NewUserMenu extends Menu {
 						Menu.navigationHistory.get(Menu.navigationHistory.size() - 1).parseCommand("back");
 						Menu.navigationHistory.add(HomeMenu.getMenu());
 					} catch (ExitingException e1) {
-						System.out.println("THIS SHOULDN'T BE POSSIBLE!!!");
-					}
-				} catch (NoSuchElementException e) {
-					System.out.println("Your account was created but we couldn't log you in automatically. Returning to sign in page.");
-					try {
-						Menu.navigationHistory.get(Menu.navigationHistory.size() - 1).parseCommand("back");
-					} catch (ExitingException e1) {
-						System.out.println("THIS SHOULDN'T BE POSSIBLE!!!");
+						System.out.println("\nTHIS SHOULDN'T BE POSSIBLE!!!");
 					}
 					
+					return true;
+				} catch (NoSuchElementException e) {
+					System.out.println("\nYour account was created but we couldn't log you in automatically. Returning to previous page.");
+					try {
+						Menu.navigationHistory.get(Menu.navigationHistory.size() - 1).parseCommand("back");
+						return true;
+					} catch (ExitingException e1) {
+						System.out.println("\nTHIS SHOULDN'T BE POSSIBLE!!!");
+						return false;
+					}
 				}
+			} else {
+				System.out.println("\nCouldn't create user. Sorry the the inconvience");
+				return false;
 			}
+		} else {
+			System.out.println("\nCancelled user creation.");
+			return false;
 		}
-		//DAO STUFF
 	}
 	
 	public boolean validateInfo(String first, String last, String user, String phone, String pass, String confirm) {
-		StringBuilder errors = new StringBuilder("Errors Found:");
+		StringBuilder errors = new StringBuilder("\nErrors Found:");
 		if(first.equals("")) {
 			errors.append("\nFirst name cannot be empty");
 		}
@@ -219,16 +237,16 @@ public class NewUserMenu extends Menu {
 		} 
 		
 		if(pass.length() < 8) {
-			errors.append("Password is too short");
+			errors.append("\nPassword is too short");
 		}
 		
 		//DAO VALIDATION
 		if(!Application.bankingService.checkUsernameAvailability(user)) {
-			errors.append("Username already exist. Please choose a new username");
+			errors.append("\nUsername already exist. Please choose a new username");
 		}
 		
 		if(!errors.toString().equals("Errors Found:")){
-			System.out.println(errors.toString());
+			System.out.println("\n" + errors.toString());
 			return false;
 		}
 		return true;

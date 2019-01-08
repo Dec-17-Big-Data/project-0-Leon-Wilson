@@ -19,9 +19,9 @@ public class SingleAccountMenu extends Menu {
 				+ "This is your Individual Account menu. Here you can view the accounts details as well deposit or withdrawl money\n"
 				+ "\nCOMMANDS\n"
 				+ "display-account-summary : displays accounts information on the screen.\n"
-				+ "withdraw [amount] : withdraws the specified amount from the account. (can lead to an overdraft) \n"
-				+ "deposit [amount] : deposits the specified amount to the account.\n"
-				+ "display-balance : displays the balance for the current account\n"
+				+ "withdraw [amount]       : withdraws the specified amount from the account. (can lead to an overdraft) \n"
+				+ "deposit [amount]        : deposits the specified amount to the account.\n"
+				+ "display-balance         : displays the balance for the current account\n"
 				+ "----------------";
 	public static Menu getMenu() {
 		if(menu == null) {
@@ -48,18 +48,41 @@ public class SingleAccountMenu extends Menu {
 					displayAccountSummary();
 					break;
 				case "withdraw":
-					withdraw(Double.valueOf(command.split(" ")[1]));
+					try {
+						if(!withdraw(Double.valueOf(command.split(" ")[1]))) {
+							System.out.println("\nWithdrawl failed.");
+							return false;
+						} else {
+							System.out.println("\nWithdrawl successful");
+						}
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
+					}
 					break;
 				case "deposit":
-					deposit(Double.valueOf(command.split(" ")[1]));
+					try {
+						if(!deposit(Double.valueOf(command.split(" ")[1]))) {
+							System.out.println("\nDeposit failed.");
+							return false;
+						} else {
+							System.out.println("\nDeposit successful");
+						}
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
+					}
 					break;
 				case "display-balance":
 					displayBalance();
 					break;
 				default :
+					System.out.println("\nSyntax error.");
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
@@ -67,7 +90,7 @@ public class SingleAccountMenu extends Menu {
 		return true;
 	}
 	
-	public void withdraw(Double amount) {
+	public boolean withdraw(Double amount) {
 		try {
 			Account a = Application.currentUser.getAccessedAccount();
 			if(amount < 0) {
@@ -79,15 +102,21 @@ public class SingleAccountMenu extends Menu {
 			
 			a.setBalance(a.getBalance() - amount);
 			//UPDATE IN DATABASE
-			Application.bankingService.updateBalance(a.getAccountID(), a.getBalance());
+			if(Application.bankingService.updateBalance(a.getAccountID(), a.getBalance())) {
+				return true;
+			} else {
+				System.out.println("\nFailed while trying to update balance.");
+			}
+			return false;
 		} catch (OverdraftException e) {
-			System.out.println("Not enough money in account to withdraw " + amount);
+			System.out.println("\nNot enough money in account to withdraw " + amount);
 		} catch (InvalidValueException e) {
-			System.out.println("The value given was invalid. Please try again");
+			System.out.println("\nThe value given was invalid. Please try again");
 		}
+		return false;
 	}
 	
-	public void deposit(Double amount) {
+	public boolean deposit(Double amount) {
 		try {
 			Account a = Application.currentUser.getAccessedAccount();
 			if(amount < 0) {
@@ -96,15 +125,21 @@ public class SingleAccountMenu extends Menu {
 			
 			a.setBalance(a.getBalance() + amount);
 			//UPDATE IN DATABASE
-			Application.bankingService.updateBalance(a.getAccountID(), a.getBalance());
+			if(Application.bankingService.updateBalance(a.getAccountID(), a.getBalance())) {
+				return true;
+			}else {
+				System.out.println("\nFailed while trying to update balance.");
+			}
+			return false;
 		} catch (InvalidValueException e) {
-			System.out.println("The value given was invalid. Please try again");
+			System.out.println("\nThe value given was invalid. Please try again");
 		}
+		return false;
 	}
 	
 	public void displayAccountSummary() {
 		Account a = Application.currentUser.getAccessedAccount();
-		System.out.println("ACCOUNT : "+a.getAccountID() + "\n"
+		System.out.println("\nACCOUNT : "+a.getAccountID() + "\n"
 				+"NAME : "+ a.getAccountName() + "\n"
 				+"TYPE : "+ a.getType() + "\n"
 				+"BALANCE : "+ a.getBalance() + "\n");
@@ -112,7 +147,7 @@ public class SingleAccountMenu extends Menu {
 	
 	public void displayBalance() {
 		Account a = Application.currentUser.getAccessedAccount();
-		System.out.println("The current balance of the account is " + a.getBalance());
+		System.out.println("\nThe current balance of the account is " + a.getBalance());
 	}
 
 	@Override

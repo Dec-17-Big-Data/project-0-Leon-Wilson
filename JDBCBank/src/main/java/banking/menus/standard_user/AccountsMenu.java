@@ -23,9 +23,9 @@ public class AccountsMenu extends Menu {
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
 				+ "This is your Accounts menu. Here you can view all of your accounts and access each individually.\n"
 				+ "\nCOMMANDS\n"
-				+ "display-account-list : accounts information on the screen.\n"
+				+ "display-account-list        : accounts information on the screen.\n"
 				+ "delete-account [account_id] : deletes the specified account. (account must have a 0 balance in order to be deleted)\n"
-				+ "add-account: goes through the account creation process.\n"
+				+ "add-account                 : goes through the account creation process.\n"
 				+ "access-account [account id] : navigates to the requested account's page\n"
 				+ "----------------";
 	
@@ -43,7 +43,7 @@ public class AccountsMenu extends Menu {
 	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			if(tooManyArguments(command,maxArguments)) {
-				System.out.println("");
+				System.out.println("Too many arguments provided");
 				return false;
 			}
 			
@@ -59,28 +59,56 @@ public class AccountsMenu extends Menu {
 						deleteAccount(new Integer(command.split(" ")[1]));
 					}catch(AccountDoesntExistException e) {
 						System.out.println("\nCouldn't find account.");
+						return false;
 					}catch (NonEmptyAccountException e) {
 						System.out.println("\nYou can not delete an account unless it is empty.");
+						return false;
 					} catch (NumberFormatException e) {
 						System.out.println("\n not a valid number.");
+						return false;
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
 					}
 					break;
 				case "add-account":
-					addAccountSetup();
+					if(!addAccountSetup()) {
+						System.out.println("\nNew account was not created");
+						return false;
+					} else {
+						System.out.println("\nNew account created.");
+					}
 					break;
 				case "access-account":
-					for(Account a : Application.currentUser.getAccounts()) {
-						if(a.getAccountID().toString().equals(command.split(" ")[1])) {
-							Application.currentUser.setAccessedAccount(a);
-							break;
+					try {
+						boolean account_found = false;
+						for(Account a : Application.currentUser.getAccounts()) {
+							if(a.getAccountID().toString().equals(command.split(" ")[1])) {
+								Application.currentUser.setAccessedAccount(a);
+								account_found = true;
+								break;
+							}
 						}
+						
+						if(!account_found) {
+							throw new AccountDoesntExistException();
+						}
+					}catch (AccountDoesntExistException e) {
+						System.out.println("\nCouldn't find account.");
+						return false;
+					}catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided.");
+						return false;
 					}
 					Menu.navigationHistory.add(SingleAccountMenu.getMenu());
 					break;
 				default :
+					System.out.println("\nSyntax error.");
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
@@ -96,7 +124,7 @@ public class AccountsMenu extends Menu {
 		}
 	}
 	
-	public void addAccountSetup() {
+	public boolean addAccountSetup() {
 		boolean incomplete = true, cancelled = false;
 		User u = Application.currentUser;
 		String accountName = "";
@@ -106,13 +134,13 @@ public class AccountsMenu extends Menu {
 			//ACCOUNT NAME
 			do {
 				if(cancelled) break;
-				System.out.println("Please enter your accounts name");
+				System.out.println("\nPlease enter your accounts name");
 				boolean name_found = false;
 				String input = InputHelper.getInputHelper().getInput();
 				
 				if(input.equals(""))
 				{
-					System.out.println("Account name cannot be empty");
+					System.out.println("\nAccount name cannot be empty");
 					cancelled = InputHelper.getInputHelper().cancelInput();
 					continue;
 				}
@@ -123,7 +151,7 @@ public class AccountsMenu extends Menu {
 				}
 				
 				if(name_found) {
-					System.out.println("You already have an account with the name : " + input);
+					System.out.println("\nYou already have an account with the name : " + input);
 					cancelled = InputHelper.getInputHelper().cancelInput();
 					continue;
 				}
@@ -135,7 +163,7 @@ public class AccountsMenu extends Menu {
 			//ACCOUNT TYPE
 			do {
 				if(cancelled) break;
-				System.out.println("Please enter your account type \n ACCOUNT TYPES \n checking \n savings");
+				System.out.println("\nPlease enter your account type \n ACCOUNT TYPES \n checking \n savings");
 				String input = InputHelper.getInputHelper().getInput();
 				boolean unknownType = false;
 				if(input.equals("")) {
@@ -155,7 +183,7 @@ public class AccountsMenu extends Menu {
 				}
 				
 				if(unknownType) {
-					System.out.println("Type of account " + input + " unknown");
+					System.out.println("\nType of account " + input + " unknown");
 					cancelled = InputHelper.getInputHelper().cancelInput();
 					continue;
 				}
@@ -166,7 +194,7 @@ public class AccountsMenu extends Menu {
 			do {	
 				if(cancelled) break;
 				try {
-					System.out.println("Please enter your initial balance (Initial balance can only be whole dollar amounts)");
+					System.out.println("\nPlease enter your initial balance (Initial balance can only be whole dollar amounts)");
 					String input = InputHelper.getInputHelper().getInput();
 					
 					if(input.matches("[^0-9]")) {
@@ -183,10 +211,10 @@ public class AccountsMenu extends Menu {
 			}while(true);
 			
 			do {
-				System.out.println("Account name : " + accountName + "\n" +
+				System.out.println("\nAccount name : " + accountName + "\n" +
 						"Account type : " + accountType + "\n" +
 						"Initial balance : " + accountBalance);
-				System.out.println("Please confirm creation : Y / N");
+				System.out.println("\nPlease confirm creation : Y / N");
 				String confirm = InputHelper.getInputHelper().getInput();
 				if(confirm.toUpperCase().equals("Y")) {
 					incomplete = false;
@@ -201,8 +229,14 @@ public class AccountsMenu extends Menu {
 		
 		if(!cancelled) {
 			if(Application.bankingService.addNewAccount(u.getUserID(), accountType, accountBalance, accountName)) {
-				
+				return true;
+			}else {
+				System.out.println("\nFailed while trying to add new account. Sorry for the inconvience.");
+				return false;
 			}
+		} else {
+			System.out.println("\nCancelled account creation.");
+			return false;
 		}
 	}
 	
@@ -214,6 +248,8 @@ public class AccountsMenu extends Menu {
 					if(Application.bankingService.deleteAccount(accountID)) {
 						u.getAccounts().remove(a);
 						return;
+					} else {
+						System.out.println("\nFailed to delete account. Sorry for the inconvience.");
 					}
 					break;
 				} else {

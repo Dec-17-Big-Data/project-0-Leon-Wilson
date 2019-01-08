@@ -45,6 +45,7 @@ public interface BankingDAO {
 	boolean updateSuperUsername(Integer userID, String username);
 	boolean checkSuperUsernameAvailability(String username);
 	boolean addSuperUser(String username, String password);
+	boolean deleteUser(Integer userID);
 	
 	//--TRANSACTIONS--//
 	Optional<List<Transaction>> getUserTransactions();

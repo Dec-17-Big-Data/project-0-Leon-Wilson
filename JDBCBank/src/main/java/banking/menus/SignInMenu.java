@@ -21,9 +21,9 @@ public class SignInMenu extends Menu {
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
 			+ "This is the sign in page. You will be taken to this page upon opening the application.\n"
 			+ "\nCOMMANDS\n"
-			+ "sign-in [username] [password] : attempts to sign in a user with the given username and password.\n"
+			+ "sign-in [username] [password]       : attempts to sign in a user with the given username and password.\n"
 			+ "sign-in-admin [username] [password] : attempts to sign in a super user with the given username and password.\n"
-			+ "sign-up : navigates to the new user menu.\n"
+			+ "sign-up                             : navigates to the new user menu.\n"
 			+ "----------------";
 	
 	public static Menu getMenu() {
@@ -39,7 +39,7 @@ public class SignInMenu extends Menu {
 	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			if(tooManyArguments(command,maxArguments)) {
-				System.out.println("");
+				System.out.println("Too many arguments provided");
 				return false;
 			}
 			
@@ -51,7 +51,11 @@ public class SignInMenu extends Menu {
 						Application.currentSuperUser = Application.bankingService.signInSuperUser(command.split(" ")[1], command.split(" ")[2]).get();
 						Menu.navigationHistory.add(SuperUserHomeMenu.getMenu());
 					} catch(NoSuchElementException e) {
-						System.out.println("Couldn't sign in. Please check creditials and try again");
+						System.out.println("\nCouldn't sign in. Please check creditials and try again");
+						return false;
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
 					}
 					break;
 				case "sign-in":
@@ -59,16 +63,23 @@ public class SignInMenu extends Menu {
 						Application.currentUser = Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]).get();
 						Menu.navigationHistory.add(HomeMenu.getMenu());
 					} catch(NoSuchElementException e) {
-						System.out.println("Couldn't sign in. Please check credentials and try again");
+						System.out.println("\nCouldn't sign in. Please check credentials and try again");
+						return false;
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
 					}
 					break;
 				case "sign-up":
 					Menu.navigationHistory.add(NewUserMenu.getMenu());
 					break;
 				default :
+					System.out.println("\nSyntax error.");
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}

@@ -14,6 +14,7 @@ import java.util.Set;
 
 import banking.Application;
 import banking.ConnectionUtil;
+import banking.exceptions.sign_in_exceptions.NonexistantUserException;
 import banking.exceptions.sign_up_exceptions.UsernameAlreadyExistException;
 import banking.model.*;
 
@@ -50,17 +51,73 @@ public class BankingOracle implements BankingDAO {
 			
 			return Optional.of(listOfUsers);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Couldn't gather user list");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Something went wrong while trying to gather user list.");
 		}
 		return Optional.empty();
 	}
 
-	public Optional<User> getUser(Integer userID) {
-		User user;
+	public Optional<User> getUser(Integer userID){
+		User user = null;
 		Connection con = ConnectionUtil.getConnection();
-		return null;
+		Set<Account> usersAccounts = new HashSet<Account>();
+		
+		try {
+			for(User u : Application.currentSuperUser.getUsers()) {	
+				if(u.getUserID().equals(userID)) {
+					user = u;
+					break;
+				}
+			} 
+		
+			if(user == null) {
+				throw new NonexistantUserException();
+			}
+		}catch(NonexistantUserException e) {
+			System.out.println("No existing user found with id " + userID);
+		}
+		
+		if(con == null) {
+			return Optional.empty();
+		}
+		
+		try {
+			String accountSQL = "select * from accounts where user_id = ?";
+
+			PreparedStatement ps = con.prepareStatement(accountSQL);
+			ps.setInt(1, userID);
+			ResultSet rs = ps.executeQuery();
+			
+			
+			
+			while(rs.next()) {
+				/*String name, Integer accountID, Integer userID, 
+				 * AccountTypes type, Double balance, List<Transaction> pendingTransactions, 
+				 * List<Transaction> transactionHistory
+				*/
+				AccountTypes type;
+				switch(rs.getString("account_type")) {
+					case "checking":
+						type = AccountTypes.checking;
+						break;
+					case "savings":
+						type = AccountTypes.savings;
+						break;
+					default:
+						type = null;
+						break;
+				}
+				usersAccounts.add(new Account(rs.getString("account_name"),rs.getInt("account_id"),rs.getInt("user_id"), type, rs.getDouble("balance"), new ArrayList<Transaction>(), new ArrayList<Transaction>()));
+			}
+			
+			user.setAccounts(usersAccounts);
+			return Optional.of(user);
+		} catch (SQLException e) {
+			
+		}
+		
+		return Optional.empty();
 	}
 	
 	@Override
@@ -580,6 +637,27 @@ public class BankingOracle implements BankingDAO {
 			
 			return true;
 		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteUser(Integer userID) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call REMOVE_USER(?)";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
 			return false;
 		}
 	}

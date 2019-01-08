@@ -20,11 +20,11 @@ public abstract class Menu {
 			+ "These are the commands available to you on any page of the application\n"
 			+ "\nCOMMANDS\n"
 			+ "sign-out : signs the current user out of the application and returns to the Sign In screen.\n"
-			+ "help : returns the help for the global commands and the current screen.\n"
-			+ "back : returns to the previous screen. If used at the Sign in screen you will be prompted on whether you would like to exit.\n"
-			+ "exit : signs the current user out and exits the application\n"
-			+ "trail : shows you the trail you have taken throughout the application. Some pages may not be added to the navigation history\n"
-			+ "home : returns to the user's home screen\n"
+			+ "help     : returns the help for the global commands and the current screen.\n"
+			+ "back     : returns to the previous screen. If used at the Sign in screen you will be prompted on whether you would like to exit.\n"
+			+ "exit     : signs the current user out and exits the application\n"
+			+ "trail    : shows you the trail you have taken throughout the application. Some pages may not be added to the navigation history\n"
+			+ "home     : returns to the user's home screen\n"
 			+ "----------------";	
 	
 	/***
@@ -52,19 +52,26 @@ public abstract class Menu {
 			case "back":
 				if(navigationHistory.size() != 1)
 				{
+					if(navigationHistory.get(navigationHistory.size() - 1).getName().equals("Home")) {
+						Application.currentUser = null;
+					}
 					navigationHistory.remove(navigationHistory.size() - 1);
+					if(navigationHistory.size() == 1) {
+						Application.currentSuperUser = null;
+						Application.currentUser = null;
+					}
 				}else {
 					InputHelper helper = InputHelper.getInputHelper();
 					Boolean badInput = true;
 					do {
 						System.out.println("You are at the root, would you like to exit? Y or N");
 						String input = helper.getInput();
-						if(input.equals("Y"))
+						if(input.toUpperCase().equals("Y"))
 						{
-							System.out.println("Goodbye!");
+							System.out.println("\nClosing application. Goodbye!");
 							//helper.closeScanner();
 							throw new ExitingException("Exiting Application");
-						} else if (input.equals("N")) {
+						} else if (input.toUpperCase().equals("N")) {
 							badInput = false;
 						}
 					}while(badInput);
@@ -77,7 +84,7 @@ public abstract class Menu {
 				//remove from history in reverse order until you reach either User Home or Super User Home
 				break;
 			case "exit":
-				System.out.println("Goodbye!");
+				System.out.println("\n Closing application. Goodbye!");
 				throw new ExitingException("Exiting Application");
 			}
 			

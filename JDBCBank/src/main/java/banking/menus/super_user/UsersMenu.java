@@ -1,12 +1,17 @@
 package banking.menus.super_user;
 
+import java.util.NoSuchElementException;
+
 import banking.Application;
 import banking.exceptions.ExitingException;
 import banking.menus.Menu;
+import banking.menus.NewUserMenu;
+import banking.menus.standard_user.HomeMenu;
+import banking.model.*;
 
 public class UsersMenu extends Menu {
 	protected String commands ="(create|delete|access)-user|display-user-list";
-	private Integer maxArguments = 1;
+	private Integer maxArguments = 2;
 	private static String name = "Users";
 	private static Menu menu = null;
 	
@@ -14,10 +19,10 @@ public class UsersMenu extends Menu {
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
 			+ "This is the Users list page. Here you will be able to modify your banking application's users\n"
 			+ "\nCOMMANDS\n"
-			+ "create-user : navigate through the user creation process.\n"
-			+ "delete-user [user_id] : deletes the specified user menu\n"
-			+ "access-user : navigates to the user list.\n"
-			+ "display-user-list : displays the list of users.\n"
+			+ "create-user           : navigate through the user creation process.\n"
+			+ "delete-user [user_id] : deletes the specified user.\n"
+			+ "access-user [user_id] : accesses the specified user.\n"
+			+ "display-user-list     : displays the list of users.\n"
 			+ "----------------";
 	public static Menu getMenu() {
 		if(menu == null) {
@@ -33,7 +38,7 @@ public class UsersMenu extends Menu {
 	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			if(tooManyArguments(command,maxArguments)) {
-				System.out.println("");
+				System.out.println("Too many argument");
 				return false;
 			}
 			
@@ -45,21 +50,38 @@ public class UsersMenu extends Menu {
 					Application.currentSuperUser.displayAllUser();
 					break;
 				case "create-user":
-					
+					Menu.navigationHistory.add(NewUserMenu.getMenu());
 					break;
 				case "delete-user":
-					
+					try {
+						if(!deleteUser(Integer.valueOf(command.split(" ")[1]))) {
+							System.out.println("\nDeletion cancelled");
+						} else {
+							System.out.println("\nDeletion successful");
+						}
+					} catch(NumberFormatException e) {
+						System.out.println("\nInvalid value provided.");
+						return false;
+					} catch(IndexOutOfBoundsException e) {
+						System.out.println("\nNot enough arguments provided");
+						return false;
+					}
 					break;
 				case "access-user":
-					
-					break;
-				case "edit-phone-number":
-					
+					if(accessUser(Integer.valueOf(command.split(" ")[1]))) {
+						System.out.println("\nNavigating to user home..");
+						Menu.navigationHistory.add(HomeMenu.getMenu());
+					} else {
+						System.out.println("\nCouldn't access user");
+					}
 					break;
 				default :
+					System.out.println("\nSyntax error.");
 					return false;
 				}
 				return true;
+			}else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
@@ -70,8 +92,32 @@ public class UsersMenu extends Menu {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
+	}
+	
+	public boolean accessUser(Integer userID) {
+		try {
+		Application.currentUser = Application.bankingService.getUser(userID).get();
+		return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	public boolean deleteUser(Integer userID) {
+		SuperUser su = Application.currentSuperUser;
+		for(User u : su.getUsers()) {
+			if(u.getUserID().equals(userID)) {
+				if(Application.bankingService.deleteUser(userID)) {
+					su.getUsers().remove(u);
+					return true;
+				}else {
+					System.out.println("\nFailed while trying to delete user.");
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

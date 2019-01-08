@@ -42,22 +42,34 @@ public class EditSuperUserInfoMenu extends Menu {
 			if(command.split(" ")[0].matches(commands)) {
 				switch(command.split(" ")[0]) {
 				case "edit-super-password":
-					changePassword();
+					if(!changePassword()) {
+						System.out.println("\nPassword not changed.");
+						return false;
+					} else {
+						System.out.println("\nPassword was changed.");
+					}
 					break;
 				case "edit-super-username":
-					changeUsername();
+					if(!changeUsername()) {
+						System.out.println("\nUsername not changed.");
+						return false;
+					} else {
+						System.out.println("\nUsername was changed.");
+					}
 					break;
 				default :
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
 		return true;
 	}
 	
-	public void changePassword() {
+	public boolean changePassword() {
 		SuperUser u = Application.currentSuperUser;
 		boolean cancel = false;
 		boolean incomplete = true;
@@ -68,13 +80,13 @@ public class EditSuperUserInfoMenu extends Menu {
 			pass = InputHelper.getInputHelper().getInput();
 			
 			if(pass.length() < 8) {
-				System.out.println("Your password is too short");
+				System.out.println("\nYour password is too short");
 				continue;
 			}
 			
 			if(pass.equals(u.getPassword()))
 			{
-				System.out.println("You are already using that password");
+				System.out.println("\nYou are already using that password");
 				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
@@ -87,7 +99,7 @@ public class EditSuperUserInfoMenu extends Menu {
 				continue;
 			}
 			do {
-				System.out.println("Do you want to finalize your password change? : Y / N");
+				System.out.println("\nDo you want to finalize your password change? : Y / N");
 				String confirm = InputHelper.getInputHelper().getInput();
 				if(confirm.toUpperCase().equals("Y")) {
 					incomplete = false;
@@ -103,36 +115,41 @@ public class EditSuperUserInfoMenu extends Menu {
 		if(!cancel) {
 			if(Application.bankingService.updateSuperPassword(u.getUserID(), pass)) {
 				u.setPassword(pass);
+				return true;
+			} else {
+				System.out.println("\nFailed while trying to update password.");
+				return false;
 			}
 		}else {
-			System.out.println("Cancelled password edit.");
+			System.out.println("\nCancelled password edit.");
+			return false;
 		}
 	}
 	
-	public void changeUsername() {
+	public boolean changeUsername() {
 		boolean incomplete = true;
 		boolean cancel = false;
 		SuperUser u = Application.currentSuperUser;
 		String input;		
 		do {
-			System.out.println("Please enter your new username : ");
+			System.out.println("\nPlease enter your new username : ");
 			input = InputHelper.getInputHelper().getInput();
 
 			if(input.equals("")) {
-				System.out.println("Your username can not be empty");
+				System.out.println("\nYour username can not be empty");
 				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
 			if(input.toLowerCase().equals(u.getUsername().toLowerCase()))
 			{
-				System.out.println("Your username is already " + input);
+				System.out.println("\nYour username is already " + input);
 				cancel = InputHelper.getInputHelper().cancelInput();
 				continue;
 			}
 			
 			do {
-				System.out.println("Do you want to change your username to " + input + "? : Y / N");
+				System.out.println("\nDo you want to change your username to " + input + "? : Y / N");
 				String confirm = InputHelper.getInputHelper().getInput();
 				if(confirm.toUpperCase().equals("Y")) {
 					incomplete = false;
@@ -146,10 +163,15 @@ public class EditSuperUserInfoMenu extends Menu {
 		}while (incomplete && !cancel);
 		if(!cancel) {
 			if(Application.bankingService.updateSuperUsername(u.getUserID(), input)) {
-				u.setUsername(input);				
+				u.setUsername(input);
+				return true;
+			} else {
+				System.out.println("\nFailed while trying to update username.");
+				return false;
 			}
 		} else {
-			System.out.println("Cancelled username edit.");
+			System.out.println("\nCancelled username edit.");
+			return false;
 		}
 	}
 	@Override

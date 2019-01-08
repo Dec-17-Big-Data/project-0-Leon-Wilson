@@ -18,11 +18,11 @@ public class SuperUserHomeMenu extends Menu {
 	
 	//HELP SCREEN
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
-			+ "This is the Super User page. Here you will have administrative priviledges over the bank users.\n"
+			+ "This is the Super User Home page. Here you will have administrative priviledges over the bank users.\n"
 			+ "\nCOMMANDS\n"
 			+ "create-super-user : creates a new super user.\n"
-			+ "edit-super-user : navigates to the super user edit menu\n"
-			+ "access-user-list : navigates to the user list.\n"
+			+ "edit-super-user   : navigates to the super user edit menu\n"
+			+ "access-user-list  : navigates to the user list.\n"
 			+ "----------------";
 	
 	public static Menu getMenu() {
@@ -47,7 +47,11 @@ public class SuperUserHomeMenu extends Menu {
 			if(command.split(" ")[0].matches(commands)) {
 				switch(command.split(" ")[0]) {
 				case "create-super-user":
-					createSuperUser();
+					if(!createSuperUser()) {
+						System.out.println("\nNew super user not created.");
+					} else {
+						System.out.println("\nNew super user created.");
+					}
 					break;
 				case "edit-super-user":
 					Menu.navigationHistory.add(EditSuperUserInfoMenu.getMenu());
@@ -59,13 +63,15 @@ public class SuperUserHomeMenu extends Menu {
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
 		return true;
 	}
 	
-	public void createSuperUser() {
+	public boolean createSuperUser() {
 		boolean incomplete = true, cancelled = false;
 		SuperUser u = Application.currentSuperUser;
 		String username = "";
@@ -126,8 +132,14 @@ public class SuperUserHomeMenu extends Menu {
 		
 		if(!cancelled) {
 			if(Application.bankingService.addSuperUser(username, pass)) {
-				System.out.println("New super user has been created.");
+				return true;
+			} else {
+				System.out.println("\nFailed while trying to create super user.");
+				return false;
 			}
+		} else {
+			System.out.println("\nCancelled super user creation.");
+			return false;
 		}
 	}
 

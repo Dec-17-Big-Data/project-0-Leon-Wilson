@@ -16,9 +16,9 @@ public class HomeMenu extends Menu {
 	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
 				+ "This is your User home menu. Here you can view your information and access your accounts.\n"
 				+ "\nCOMMANDS\n"
-				+ "display-user-info : shows the users information on the screen.\n"
-				+ "edit-user-info : navigates to the edit user menu, where you can update your user info.\n"
-				+ "access-account-list: navigates to the accounts menu for the specified account.\n"
+				+ "display-user-info   : shows the users information on the screen.\n"
+				+ "edit-user-info      : navigates to the edit user menu, where you can update your user info.\n"
+				+ "access-account-list : navigates to the accounts menu for the specified account.\n"
 				+ "----------------";
 	
 	public static Menu getMenu() {
@@ -35,7 +35,7 @@ public class HomeMenu extends Menu {
 	public boolean parseCommand(String command) throws ExitingException {
 		if(!super.parseCommand(command)) {
 			if(tooManyArguments(command,maxArguments)) {
-				System.out.println("");
+				System.out.println("Too many arguments provided");
 				return false;
 			}
 			
@@ -52,9 +52,12 @@ public class HomeMenu extends Menu {
 					Menu.navigationHistory.add(AccountsMenu.getMenu());
 					break;
 				default :
+					System.out.println("\nSyntax error.");
 					return false;
 				}
 				return true;
+			} else {
+				System.out.println("\nUnknown command");
 			}
 			return false;
 		}
@@ -64,7 +67,7 @@ public class HomeMenu extends Menu {
 	
 	public void displayUserInfo() {
 		User u = Application.currentUser;
-		System.out.println("Name : " + u.getFirstName() + " " + u.getLastName() + "\n"
+		System.out.println("\nName : " + u.getFirstName() + " " + u.getLastName() + "\n"
 				+ "Username : " + u.getUsername() + "\n"
 				+ "Phone Number : " + u.getPhoneNumber() +"\n");
 	}

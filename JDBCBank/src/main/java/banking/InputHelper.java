@@ -27,7 +27,7 @@ public class InputHelper {
 	
 	public boolean cancelInput() {
 		do {
-			System.out.println("Would you like to cancel? Y / N");
+			System.out.println("\nWould you like to cancel? Y / N");
 			String conf2 = getInput();
 			if(conf2.toUpperCase().equals("Y")) {
 				return true;
