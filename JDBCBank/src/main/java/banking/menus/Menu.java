@@ -8,7 +8,7 @@ import banking.InputHelper;
 import banking.exceptions.ExitingException;
 
 public abstract class Menu {
-	private String commands =  "(sign-out|help|back|exit|trail|home)";
+	private String commands =  "(sign-out|help|back|exit|trail)";
 	private final Integer maxArguments = 1;
 	static public List<Menu> navigationHistory = new ArrayList<Menu>();
 	static {
@@ -24,7 +24,6 @@ public abstract class Menu {
 			+ "back     : returns to the previous screen. If used at the Sign in screen you will be prompted on whether you would like to exit.\n"
 			+ "exit     : signs the current user out and exits the application\n"
 			+ "trail    : shows you the trail you have taken throughout the application. Some pages may not be added to the navigation history\n"
-			+ "home     : returns to the user's home screen\n"
 			+ "----------------";	
 	
 	/***
@@ -33,7 +32,6 @@ public abstract class Menu {
 	 */
 	public boolean parseCommand(String command) throws ExitingException/*throws somethingHere*/{
 		if(tooManyArguments(command, maxArguments)) {
-			//throw too many arguments?
 			return false;
 		}
 		
@@ -79,9 +77,6 @@ public abstract class Menu {
 				break;
 			case "trail":
 				getTrail();
-				break;
-			case "home":
-				//remove from history in reverse order until you reach either User Home or Super User Home
 				break;
 			case "exit":
 				System.out.println("\nClosing application. Goodbye!");

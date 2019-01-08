@@ -28,6 +28,9 @@ public class User {
 //---CONSTRUCTORS---//
 	
 	//--NEW USER--//
+	public User() {
+		
+	}
 	
 	/***
 	 * @author Leon Wilson
