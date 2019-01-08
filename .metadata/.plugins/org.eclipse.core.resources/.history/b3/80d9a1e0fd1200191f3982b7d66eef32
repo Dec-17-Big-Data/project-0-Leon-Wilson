@@ -1,0 +1,81 @@
+package banking.menus.super_user;
+
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+
+public class UsersMenu extends Menu {
+	protected String commands ="(create|delete|access)-user|display-user-list";
+	private Integer maxArguments = 1;
+	private static String name = "Users";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the Users list page. Here you will be able to modify your banking application's users\n"
+			+ "\nCOMMANDS\n"
+			+ "create-user : navigate through the user creation process.\n"
+			+ "delete-user [user_id] : deletes the specified user menu\n"
+			+ "access-user : navigates to the user list.\n"
+			+ "display-user-list : displays the list of users.\n"
+			+ "----------------";
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new UsersMenu();
+		}
+		return menu;
+	}
+	
+	private UsersMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				//ALL DAO STUFF
+				case "edit-first-name":
+					
+					break;
+				case "edit-last-name":
+					
+					break;
+				case "edit-password":
+					
+					break;
+				case "edit-username":
+					
+					break;
+				case "edit-phone-number":
+					
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		return true;
+	}
+
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+}

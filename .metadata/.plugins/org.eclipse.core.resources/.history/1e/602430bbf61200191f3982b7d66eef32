@@ -1,0 +1,81 @@
+package banking.menus.super_user;
+
+import java.util.NoSuchElementException;
+
+import banking.Application;
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+import banking.menus.NewUserMenu;
+import banking.menus.standard_user.HomeMenu;
+
+public class SuperUserHomeMenu extends Menu {
+	protected String commands ="(((edit|create)-super-user)|access-user-list)";
+	private Integer maxArguments = 1;
+	private static String name = "Super User";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the Super User page. Here you will have administrative priviledges over the bank users.\n"
+			+ "\nCOMMANDS\n"
+			+ "create-super-user : creates a new super user.\n"
+			+ "edit-super-user : navigates to the super user edit menu\n"
+			+ "access-user-list : navigates to the user list.\n"
+			+ "----------------";
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new SuperUserHomeMenu();
+		}
+		return menu;
+	}
+	
+	private SuperUserHomeMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				case "create-super-user":
+					//CREATION PROCESS
+					break;
+				case "edit-super-user":
+					Menu.navigationHistory.add(EditSuperUserInfoMenu.getMenu());
+					break;
+				case "access-user-list":
+					Menu.navigationHistory.add(UsersMenu.getMenu());
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	public void createSuperUser() {
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+}

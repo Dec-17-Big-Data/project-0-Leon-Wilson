@@ -1,0 +1,42 @@
+package banking.menus.super_user;
+
+import banking.menus.Menu;
+
+public class SuperUserHomeMenu extends Menu {
+	protected String commands ="(((edit|create)-super-user)|access-user-list)";
+	private Integer maxArguments = 3;
+	private static String name = "Sign In";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the sign in page. You will be taken to this page upon opening the application.\n"
+			+ "\nCOMMANDS\n"
+			+ "edit-super-user : attempts to sign in a user with the given username and password.\n"
+			+ "create-super-user : creates a new super user account.\n"
+			+ "access-user-list : navigates to the user list.\n"
+			+ "----------------";
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new SuperUserHomeMenu();
+		}
+		return menu;
+	}
+	
+	private SuperUserHomeMenu() {
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+}

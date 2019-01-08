@@ -1,0 +1,158 @@
+package banking.menus.super_user;
+
+import banking.Application;
+import banking.InputHelper;
+import banking.exceptions.ExitingException;
+import banking.exceptions.InvalidValueException;
+import banking.menus.Menu;
+import banking.model.Account;
+import banking.model.AccountTypes;
+import banking.model.SuperUser;
+
+public class SuperUserHomeMenu extends Menu {
+	protected String commands ="(((edit|create)-super-user)|access-user-list)";
+	private Integer maxArguments = 1;
+	private static String name = "Super User";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the Super User page. Here you will have administrative priviledges over the bank users.\n"
+			+ "\nCOMMANDS\n"
+			+ "create-super-user : creates a new super user.\n"
+			+ "edit-super-user : navigates to the super user edit menu\n"
+			+ "access-user-list : navigates to the user list.\n"
+			+ "----------------";
+	
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new SuperUserHomeMenu();
+		}
+		return menu;
+	}
+	
+	private SuperUserHomeMenu() {
+		
+	}
+	
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				case "create-super-user":
+					createSuperUser();
+					break;
+				case "edit-super-user":
+					Menu.navigationHistory.add(EditSuperUserInfoMenu.getMenu());
+					break;
+				case "access-user-list":
+					Menu.navigationHistory.add(UsersMenu.getMenu());
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	public void createSuperUser() {
+		boolean incomplete = true, cancelled = false;
+		SuperUser u = Application.currentSuperUser;
+		String accountName = "";
+		AccountTypes accountType = null;
+		Double accountBalance = 0.00;
+		do {
+			//ACCOUNT NAME
+			do {
+				if(cancelled) break;
+				System.out.println("Please enter your username");
+				boolean name_found = false;
+				String input = InputHelper.getInputHelper().getInput();
+				
+				if(input.equals(""))
+				{
+					System.out.println("Account name cannot be empty");
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					continue;
+				}
+				for(Account a : u.getAccounts()) {
+					if(a.getAccountName().equals(input)) {
+						name_found = true;
+					}
+				}
+				
+				if(name_found) {
+					System.out.println("You already have an account with the name : " + input);
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					continue;
+				}
+				
+				accountName = input;
+				break;
+			}while(true);
+			
+			//ACCOUNT BALANCE
+			do {	
+				if(cancelled) break;
+				try {
+					System.out.println("Please enter your initial balance (Initial balance can only be whole dollar amounts)");
+					String input = InputHelper.getInputHelper().getInput();
+					
+					if(input.matches("[^0-9]")) {
+						 throw new InvalidValueException();
+					}
+					
+					accountBalance = Double.valueOf(input);
+					//STOPPING POINT
+				} catch(InvalidValueException e) {
+					System.out.println("Value given is not valid");
+					continue;
+				}
+				break;
+			}while(true);
+			
+			do {
+				System.out.println("Account name : " + accountName + "\n" +
+						"Account type : " + accountType + "\n" +
+						"Initial balance : " + accountBalance);
+				System.out.println("Please confirm creation : Y / N");
+				String confirm = InputHelper.getInputHelper().getInput();
+				if(confirm.toUpperCase().equals("Y")) {
+					incomplete = false;
+					break;
+				} else if(confirm.toUpperCase().equals("N")) {
+					incomplete = true;
+					cancelled = InputHelper.getInputHelper().cancelInput();
+					break;
+				}
+			}while(true);
+		}while(incomplete && !cancelled);
+		
+		if(!cancelled) {
+			if(Application.bankingService.addNewAccount(u.getUserID(), accountType, accountBalance, accountName)) {
+				
+			}
+		}
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+}

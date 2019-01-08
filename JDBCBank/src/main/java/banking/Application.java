@@ -10,7 +10,7 @@ import banking.model.*;
 
 public class Application {
 	public static User currentUser;
-	public static SuperUser currentSuperUser;
+	public static SuperUser currentSuperUser = null;
 	public static BankingService bankingService;
 	public static void main(String[] args) {
 		bankingService = BankingService.getService();
@@ -20,6 +20,9 @@ public class Application {
 		
 		while(!exit) {
 			Menu.navigationHistory.get(Menu.navigationHistory.size()-1).getTrail();
+			if(currentSuperUser != null) {
+				System.out.println("super user " + currentSuperUser.getUsername() + " is logged in.");
+			}
 			if(currentUser != null) {
 				System.out.println("current user : " + currentUser.getUsername());
 			} else {

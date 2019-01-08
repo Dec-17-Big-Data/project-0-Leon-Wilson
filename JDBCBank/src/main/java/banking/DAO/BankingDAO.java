@@ -2,8 +2,15 @@ package banking.DAO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import banking.model.*;
+import banking.model.Account;
+import banking.model.AccountTypes;
+import banking.model.ChargeCard;
+import banking.model.ErrorLogs;
+import banking.model.SuperUser;
+import banking.model.Transaction;
+import banking.model.User;
 
 public interface BankingDAO {
 	
@@ -17,6 +24,7 @@ public interface BankingDAO {
 	boolean updateLastName(Integer userID, String lastName);
 	boolean updatePhoneNumber(Integer userID, String phoneNumber);
 	boolean updatePassword(Integer userID, String userPassword);
+	boolean updateUsername(Integer userID, String username);
 	
 	//--ACCOUNTS--//
 	Optional<List<Account>> getUsersAccounts(Integer userID);
@@ -33,6 +41,10 @@ public interface BankingDAO {
 	Optional<User> getUser(Integer userID);
 	Optional<SuperUser> signInSuperUser(String username, String password);
 	boolean signUpSuperUser(SuperUser user);
+	boolean updateSuperPassword(Integer userID, String userPassword);
+	boolean updateSuperUsername(Integer userID, String username);
+	boolean checkSuperUsernameAvailability(String username);
+	boolean addSuperUser(String username, String password);
 	
 	//--TRANSACTIONS--//
 	Optional<List<Transaction>> getUserTransactions();

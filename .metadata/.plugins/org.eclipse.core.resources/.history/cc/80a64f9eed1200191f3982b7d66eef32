@@ -1,0 +1,41 @@
+package banking.menus.super_user;
+
+import banking.menus.Menu;
+
+public class EditSuperUserInfoMenu extends Menu {
+	protected String commands ="edit-super-(username|password)";
+	private Integer maxArguments = 1;
+	private static String name = "Edit superUser";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the Super User page. Here you will have administrative priviledges over the bank users.\n"
+			+ "\nCOMMANDS\n"
+			+ "create-super-user : creates a new super user.\n"
+			+ "edit-super-user : navigates to the super user edit menu\n"
+			+ "access-user-list : navigates to the user list.\n"
+			+ "----------------";
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new EditSuperUserInfoMenu();
+		}
+		return menu;
+	}
+	
+	private EditSuperUserInfoMenu() {
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+}

@@ -8,20 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
 import banking.Application;
 import banking.ConnectionUtil;
 import banking.exceptions.sign_up_exceptions.UsernameAlreadyExistException;
-import banking.menus.Menu;
-import banking.model.Account;
-import banking.model.AccountTypes;
-import banking.model.ChargeCard;
-import banking.model.ErrorLogs;
-import banking.model.SuperUser;
-import banking.model.Transaction;
-import banking.model.User;
+import banking.model.*;
 
 public class BankingOracle implements BankingDAO {
 	private static BankingOracle bankingOracle = null;
@@ -67,6 +61,41 @@ public class BankingOracle implements BankingDAO {
 		User user;
 		Connection con = ConnectionUtil.getConnection();
 		return null;
+	}
+	
+	@Override
+	public Optional<SuperUser> signInSuperUser(String username, String password) {
+		SuperUser user;
+		Connection con = ConnectionUtil.getConnection();
+		CallableStatement callableStatement = null;
+		
+		String sql = "{call SIGN_IN_SUPER_USER(?,?,?)}";
+		
+		if(con == null) {
+			return Optional.empty();
+		}
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setString(1, username);
+			callableStatement.setString(2, password);
+			callableStatement.registerOutParameter(3, java.sql.Types.INTEGER);
+			
+			callableStatement.executeUpdate();
+			ArrayList<User> users;
+			Integer userID = callableStatement.getInt(3);
+			try {
+				users = (ArrayList<User>) getAllUsers().get();
+			} catch (NoSuchElementException e) {
+				users = new ArrayList<User>();
+			}
+			user = new SuperUser(userID, username, password, users);
+			return Optional.of(user);
+		}catch(SQLException e) {
+			
+		}
+		
+		return Optional.empty();
 	}
 
 	@Override
@@ -167,11 +196,6 @@ public class BankingOracle implements BankingDAO {
 		return null;
 	}
 
-	@Override
-	public Optional<SuperUser> signInSuperUser(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean signUpSuperUser(SuperUser user) {
@@ -313,6 +337,29 @@ public class BankingOracle implements BankingDAO {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean updateUsername(Integer userID, String username) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_USERNAME(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, username);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
+	}
 
 	@Override
 	public boolean createNewAccount(Integer userID, AccountTypes type, Double balance, String accountName) {
@@ -435,6 +482,104 @@ public class BankingOracle implements BankingDAO {
 			return false;
 		} catch (UsernameAlreadyExistException e) {
 			System.out.println("That username already exist");
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updateSuperPassword(Integer userID, String userPassword) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_SUPER_PASSWORD(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, userPassword);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateSuperUsername(Integer userID, String username) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call UPDATE_SUPER_USERNAME(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, username);
+			
+			callableStatement.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			
+		}
+		return false;
+	}
+
+	@Override
+	public boolean checkSuperUsernameAvailability(String username) {
+		Connection con = ConnectionUtil.getConnection();
+
+		if (con == null) {
+			return false;
+		}
+
+		try {
+			String sql = "select * from super_users where username = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.isBeforeFirst()) {
+				throw new UsernameAlreadyExistException();
+			}
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("There was a problem when attempting to connect to the database.");
+			return false;
+		} catch (UsernameAlreadyExistException e) {
+			System.out.println("That username already exist");
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addSuperUser(String username, String password) {
+		Connection con = ConnectionUtil.getConnection();
+		if(con == null) {
+			return false;
+		}
+		
+		CallableStatement callableStatement = null;
+		String sql = "{call ADD_SUPER_USER(?,?)}";
+		
+		try {
+			callableStatement = con.prepareCall(sql);
+			callableStatement.setString(1,username);
+			callableStatement.setString(2,password);
+
+			callableStatement.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
 			return false;
 		}
 	}

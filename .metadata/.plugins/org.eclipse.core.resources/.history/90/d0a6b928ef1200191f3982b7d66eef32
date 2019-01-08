@@ -1,0 +1,71 @@
+package banking.menus.super_user;
+
+import banking.exceptions.ExitingException;
+import banking.menus.Menu;
+
+public class EditSuperUserInfoMenu extends Menu {
+	protected String commands ="edit-super-(username|password)";
+	private Integer maxArguments = 1;
+	private static String name = "Edit superUser";
+	private static Menu menu = null;
+	
+	//HELP SCREEN
+	private String help= Menu.help + "\n\n" + name.toUpperCase() +" MENU HELPER\n"
+			+ "This is the Super User page. Here you will have administrative priviledges over the bank users.\n"
+			+ "\nCOMMANDS\n"
+			+ "edit-super-username : change the current super user's username\n"
+			+ "edit-super-password : change the current super user's password\n"
+			+ "access-user-list : navigates to the user list.\n"
+			+ "----------------";
+	public static Menu getMenu() {
+		if(menu == null) {
+			menu = new EditSuperUserInfoMenu();
+		}
+		return menu;
+	}
+	
+	private EditSuperUserInfoMenu() {
+		
+	}
+
+	public boolean parseCommand(String command) throws ExitingException {
+		if(!super.parseCommand(command)) {
+			if(tooManyArguments(command,maxArguments)) {
+				System.out.println("");
+				return false;
+			}
+			
+			//PARSE UNDER CURRENT MENU
+			if(command.split(" ")[0].matches(commands)) {
+				switch(command.split(" ")[0]) {
+				case "edit-super-password":
+					//CREATION PROCESS
+					break;
+				case "edit-super-username":
+					Menu.navigationHistory.add(EditSuperUserInfoMenu.getMenu());
+					break;
+				default :
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	public void changePassword() {
+		
+	}
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void getHelp() {
+		// TODO Auto-generated method stub
+		System.out.println(help);
+	}
+}

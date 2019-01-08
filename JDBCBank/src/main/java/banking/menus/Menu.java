@@ -43,6 +43,7 @@ public abstract class Menu {
 				//If there is a currently logged in user, return them to null?
 				navigationHistory.removeIf(m -> m.getName() != "Sign In");
 				Application.currentUser = null;
+				Application.currentSuperUser = null;
 				break;
 			case "help":
 				//call the help method on the last item added to the navigation history

@@ -1,14 +1,14 @@
 package banking.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SuperUser {
 
 	private Integer userID;
-	private final String username;
+	private String username;
 	private String password;
-	private Set<User> users;
+	private List<User> users;
 	
 //---CONSTRUCTORS---//
 	
@@ -17,11 +17,11 @@ public class SuperUser {
 		this.userID = 0000;
 		this.username = "root";
 		this.setPassword("Administration-Dec");
-		this.setUsers(new HashSet<User>());
+		this.setUsers(new ArrayList<User>());
 	}
 	
 	//--EXISTING SUPER USER--//
-	public SuperUser(Integer userID, String username, String password, HashSet<User> users) {
+	public SuperUser(Integer userID, String username, String password, ArrayList<User> users) {
 		this.userID = userID;
 		this.username = username;
 		this.setPassword(password);
@@ -36,7 +36,10 @@ public class SuperUser {
 	}
 	
 	public void displayAllUser() {
-		
+		for(User u : users) {
+			System.out.println(u.getUserID() + " : " + u.getUsername());
+			System.out.println(u.getFirstName() + " " + u.getLastName() + "\n");
+		}
 	}
 	
 	//--FUNCTIONALITY--//
@@ -48,8 +51,6 @@ public class SuperUser {
 		
 	}
 	
-	
-	//MIGHT NEED A TON OF UPDATE METHODS (OH NOOOOOOOOOOOOOOOOO)
 	public void updateUser(User user) {
 		
 	}
@@ -71,6 +72,10 @@ public class SuperUser {
 	public String getUsername() {
 		return username;
 	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public String getPassword() {
 		return password;
@@ -80,11 +85,11 @@ public class SuperUser {
 		this.password = password;
 	}
 
-	public Set<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Set<User> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 	

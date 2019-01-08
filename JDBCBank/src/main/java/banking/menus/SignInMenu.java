@@ -9,6 +9,7 @@ import banking.DAO.BankingDAO;
 import banking.Services.BankingService;
 import banking.exceptions.ExitingException;
 import banking.menus.standard_user.HomeMenu;
+import banking.menus.super_user.SuperUserHomeMenu;
 
 public class SignInMenu extends Menu {
 	private String commands ="(sign-(in(-admin)?|up))";
@@ -46,16 +47,20 @@ public class SignInMenu extends Menu {
 			if(command.split(" ")[0].matches(commands)) {
 				switch(command.split(" ")[0]) {
 				case "sign-in-admin":
-					//DAO STUFF
+					try {
+						Application.currentSuperUser = Application.bankingService.signInSuperUser(command.split(" ")[1], command.split(" ")[2]).get();
+						Menu.navigationHistory.add(SuperUserHomeMenu.getMenu());
+					} catch(NoSuchElementException e) {
+						System.out.println("Couldn't sign in. Please check creditials and try again");
+					}
 					break;
 				case "sign-in":
-					//DAO STUFF
 					try {
-					Application.currentUser = Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]).get();
+						Application.currentUser = Application.bankingService.signInUser(command.split(" ")[1], command.split(" ")[2]).get();
+						Menu.navigationHistory.add(HomeMenu.getMenu());
 					} catch(NoSuchElementException e) {
 						System.out.println("Couldn't sign in. Please check credentials and try again");
 					}
-					Menu.navigationHistory.add(HomeMenu.getMenu());
 					break;
 				case "sign-up":
 					Menu.navigationHistory.add(NewUserMenu.getMenu());
