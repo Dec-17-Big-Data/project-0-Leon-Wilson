@@ -84,7 +84,7 @@ public abstract class Menu {
 				//remove from history in reverse order until you reach either User Home or Super User Home
 				break;
 			case "exit":
-				System.out.println("\n Closing application. Goodbye!");
+				System.out.println("\nClosing application. Goodbye!");
 				throw new ExitingException("Exiting Application");
 			}
 			
