@@ -245,7 +245,7 @@ public class NewUserMenu extends Menu {
 			errors.append("\nUsername already exist. Please choose a new username");
 		}
 		
-		if(!errors.toString().equals("Errors Found:")){
+		if(!errors.toString().equals("\nErrors Found:")){
 			System.out.println("\n" + errors.toString());
 			return false;
 		}
