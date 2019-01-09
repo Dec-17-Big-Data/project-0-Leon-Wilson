@@ -3,12 +3,7 @@ package banking.menus.super_user;
 import banking.Application;
 import banking.InputHelper;
 import banking.exceptions.ExitingException;
-import banking.exceptions.InvalidValueException;
 import banking.menus.Menu;
-import banking.model.Account;
-import banking.model.AccountTypes;
-import banking.model.SuperUser;
-import banking.model.User;
 
 public class SuperUserHomeMenu extends Menu {
 	protected String commands ="(((edit|create)-super-user)|access-user-list)";
@@ -73,7 +68,6 @@ public class SuperUserHomeMenu extends Menu {
 	
 	public boolean createSuperUser() {
 		boolean incomplete = true, cancelled = false;
-		SuperUser u = Application.currentSuperUser;
 		String username = "";
 		String pass = "";
 		String passConfirm = "";
@@ -84,7 +78,6 @@ public class SuperUserHomeMenu extends Menu {
 			do {
 				if(cancelled) break;
 				System.out.println("Please enter your username");
-				boolean name_found = false;
 				String input = InputHelper.getInputHelper().getInput();
 				
 				if(input.equals(""))

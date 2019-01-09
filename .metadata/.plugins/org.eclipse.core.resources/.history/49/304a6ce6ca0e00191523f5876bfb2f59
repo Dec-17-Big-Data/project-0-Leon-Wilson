@@ -1,8 +1,0 @@
-package banking.Services;
-
-import banking.DAO.bankingDAO;
-import banking.DAO.bankingOracle;
-
-public class bankingService {
-	final static bankingDAO dao = new bankingOracle();
-}

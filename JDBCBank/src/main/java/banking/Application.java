@@ -44,8 +44,15 @@ public class Application {
 		helper.closeScanner();
 	}
 	
+	public List<Menu> getMenus() {
+		return Menu.navigationHistory;
+	}
 	
-	public void initializeMenus() {
-		
-		}
+	public Menu getCurrentMenu() {
+		return Menu.navigationHistory.get(Menu.navigationHistory.size()-1);
+	}
+	
+	public void addMenu(Menu menu) {
+		Menu.navigationHistory.add(menu);
+	}
 }

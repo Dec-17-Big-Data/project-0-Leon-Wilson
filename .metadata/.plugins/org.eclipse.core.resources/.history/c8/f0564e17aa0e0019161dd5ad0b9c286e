@@ -1,5 +1,0 @@
-package banking.DAO;
-
-public class bankingOracle implements bankingDAO {
-
-}

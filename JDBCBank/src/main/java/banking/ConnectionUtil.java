@@ -24,7 +24,7 @@ public class ConnectionUtil {
                 }
 
                 InputStream in = null;
-
+                Connection con = null;
                 try {
                         // load information from properties file
                         Properties props = new Properties();
@@ -33,16 +33,16 @@ public class ConnectionUtil {
 
                         // get the connection object
                         Class.forName("oracle.jdbc.driver.OracleDriver");
-                        Connection con = null;
+                        con = null;
 
                         String endpoint = props.getProperty("jdbc.url");
                         String username = props.getProperty("jdbc.username");
                         String password = props.getProperty("jdbc.password");
                         
                         con = DriverManager.getConnection(endpoint, username, password);
-                        return con;
+                        ConnectionUtil.connectionInstance = con;
+                        return connectionInstance;
                 } catch (Exception e) {
-                		e.printStackTrace();
                         log.error("Unable to get connection to the database");
                 } finally {
                         try {
@@ -51,7 +51,6 @@ public class ConnectionUtil {
                               
                         }
                 }
-
                 return null;
         }
 }

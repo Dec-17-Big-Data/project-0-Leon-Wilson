@@ -6,7 +6,6 @@ import banking.exceptions.InvalidValueException;
 import banking.exceptions.account_exceptions.OverdraftException;
 import banking.menus.Menu;
 import banking.model.Account;
-import banking.model.User;
 
 public class SingleAccountMenu extends Menu {
 	protected String commands ="((display-(account-summary|(all|pending|posted)?-transactions|balance)|withdraw|deposit))";
@@ -94,10 +93,10 @@ public class SingleAccountMenu extends Menu {
 		try {
 			Account a = Application.currentUser.getAccessedAccount();
 			if(amount < 0) {
-				throw new InvalidValueException();
+				throw new InvalidValueException("Invalid value entered.");
 			}
 			if(a.getBalance() - amount < 0) {
-				throw new OverdraftException();
+				throw new OverdraftException("Account would overdraft.");
 			}
 			
 			a.setBalance(a.getBalance() - amount);
@@ -120,7 +119,7 @@ public class SingleAccountMenu extends Menu {
 		try {
 			Account a = Application.currentUser.getAccessedAccount();
 			if(amount < 0) {
-				throw new InvalidValueException();
+				throw new InvalidValueException("Invalid value entered.");
 			}
 			
 			a.setBalance(a.getBalance() + amount);

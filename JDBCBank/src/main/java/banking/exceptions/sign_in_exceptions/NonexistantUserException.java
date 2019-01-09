@@ -7,4 +7,7 @@ public class NonexistantUserException extends Exception {
 	 */
 	private static final long serialVersionUID = -6483587445932223483L;
 
+	public NonexistantUserException(String m) {
+		super(m);
+	}
 }

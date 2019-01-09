@@ -1,5 +1,0 @@
-package banking.DAO;
-
-public interface bankingDAO {
-
-}
