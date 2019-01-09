@@ -14,36 +14,6 @@ public class Account {
 
 //---CONSTRUCTORS---//
 	
-	//--NEW ACCOUNTS--//
-	/***
-	 * @author Leon Wilson
-	 */
-	public Account() {
-		this.accountName = "Default";
-		this.setAccountID(00000);
-		this.setUserID(userID);
-		this.type = AccountTypes.checking;
-		this.balance = 0.00D;
-		this.pendingTransactions = new ArrayList<Transaction>();
-		this.transactionHistory = new ArrayList<Transaction>();
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public Account(String name, Integer accountID, Integer userID, AccountTypes type) {
-		this.accountName = name;
-		this.setAccountID(accountID);
-		this.setUserID(userID);
-		this.type = type;
-		this.balance = 0.00D;
-		this.pendingTransactions = new ArrayList<Transaction>();
-		this.transactionHistory = new ArrayList<Transaction>();
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
 	public Account(String name, Integer accountID, Integer userID, AccountTypes type, Double startingBalance) {
 		this.accountName = name;
 		this.setAccountID(accountID);
@@ -56,9 +26,6 @@ public class Account {
 	
 	//--EXISTING ACCOUNT--//
 	
-	/***
-	 * @author Leon Wilson
-	 */
 	public Account(String name, Integer accountID, Integer userID, AccountTypes type, Double balance, List<Transaction> pendingTransactions, List<Transaction> transactionHistory) {
 		this.accountName = name;
 		this.setAccountID(accountID);
@@ -70,64 +37,6 @@ public class Account {
 	}
 	
 //---FUNCTIONS---//
-	
-	//--DISPLAY--//
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayAccountSummary() {
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayCurrentBalance() {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayAvailableBalance() {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayPendingTransaction() {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayTransactionHistory() {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayAllTransactions() {
-		
-	}
-	
-	//--FUNCTIONALITY--//
-	/***
-	 * @author Leon Wilson
-	 */
-	public Double calculateAvailableBalanace() {
-		Double availableBalance = 0.00D;
-		return availableBalance;
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void withdrawFunds(Double funds) {
-		
-	}
 	
 	//--GETTERS/SETTERS--//
 	public String getAccountName() {

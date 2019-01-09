@@ -4,7 +4,6 @@ import banking.Application;
 import banking.InputHelper;
 import banking.exceptions.ExitingException;
 import banking.menus.Menu;
-import banking.model.SuperUser;
 import banking.model.User;
 
 public class EditUserInfoMenu extends Menu {

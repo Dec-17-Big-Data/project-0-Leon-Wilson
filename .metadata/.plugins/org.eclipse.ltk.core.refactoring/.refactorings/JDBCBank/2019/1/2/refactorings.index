@@ -1,3 +1,18 @@
 1546733157258	Encapsulate field 'type'
 1546816737624	Encapsulate field 'accessedAccount'
 1546972362465	Delete element
+1546996827283	Rename type 'JDBCTest'
+1546997053372	Delete element
+1546997343532	Delete element
+1546997456827	Rename compilation unit 'MenuTest.java'
+1546997725623	Copy compilation unit
+1546997735791	Delete element
+1547000918891	Delete element
+1547000935750	Delete element
+1547001072829	Delete element
+1547001338438	Delete element
+1547001365122	Delete element
+1547001567270	Delete element
+1547001635851	Delete element
+1547002369897	Delete element
+1547004110410	Rename type 'ApplicationTest'

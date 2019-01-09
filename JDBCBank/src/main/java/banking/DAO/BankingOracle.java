@@ -72,7 +72,7 @@ public class BankingOracle implements BankingDAO {
 			} 
 		
 			if(user == null) {
-				throw new NonexistantUserException();
+				throw new NonexistantUserException("User does not exist.");
 			}
 		}catch(NonexistantUserException e) {
 			System.out.println("No existing user found with id " + userID);
@@ -210,72 +210,14 @@ public class BankingOracle implements BankingDAO {
 				}
 				usersAccounts.add(new Account(rs.getString("account_name"),rs.getInt("account_id"),rs.getInt("user_id"), type, rs.getDouble("balance"), new ArrayList<Transaction>(), new ArrayList<Transaction>()));
 				
-				//System.out.println(rs.getInt("account_id")+ " " +rs.getInt("user_id")+ " " +rs.getString("account_type")+ " " +rs.getFloat("balance")+ " " +rs.getString("account_name"));
 			}
 			user = new User(userID, firstName,lastName,username, phoneNumber,password, usersAccounts,new HashSet<ChargeCard>());
-			//MIGH UNDO //Application.currentUser = user;
-			//System.out.println(user.toString());
 			return Optional.of(user);
 		}catch(SQLException e) {
-			System.out.println("Couldn't sign in user");
+			
 		}
 		
-		return null;
-	}
-
-	@Override
-	public boolean signUpUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Optional<List<Account>> getUsersAccounts(Integer userID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<Account> getAccount(Integer accountID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<List<ChargeCard>> getAllCards(Integer accountID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<ChargeCard> getAccountCard(Integer accountID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean signUpSuperUser(SuperUser user) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Optional<List<Transaction>> getUserTransactions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean transfer() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Optional<List<ErrorLogs>> getErrors(Integer threshold) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
@@ -530,7 +472,7 @@ public class BankingOracle implements BankingDAO {
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.isBeforeFirst()) {
-				throw new UsernameAlreadyExistException();
+				throw new UsernameAlreadyExistException("Username already exist.");
 			}
 			
 			return true;
@@ -605,7 +547,7 @@ public class BankingOracle implements BankingDAO {
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.isBeforeFirst()) {
-				throw new UsernameAlreadyExistException();
+				throw new UsernameAlreadyExistException("Username already exist.");
 			}
 			
 			return true;

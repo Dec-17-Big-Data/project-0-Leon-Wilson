@@ -1,7 +1,5 @@
 package banking.model;
 
-
-import java.util.HashSet;
 import java.util.Set;
 
 public class User {
@@ -27,79 +25,10 @@ public class User {
 	
 //---CONSTRUCTORS---//
 	
-	//--NEW USER--//
 	public User() {
 		
 	}
 	
-	/***
-	 * @author Leon Wilson
-	 */
-	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password) {
-		this.userID = userID;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.setPhoneNumber(phoneNumber);
-		this.password = password;
-		this.accounts = new HashSet<Account>();
-		this.accounts.add(new Account()); //default account
-		//no card
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount) {
-		this.userID = userID;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.setPhoneNumber(phoneNumber);
-		this.password = password;
-		this.accounts = new HashSet<Account>();
-		this.accounts.add(newAccount);
-		this.setCards(new HashSet<ChargeCard>());
-		//no card
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, ChargeCard card) {
-		this.userID = userID;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.setPhoneNumber(phoneNumber);
-		this.password = password;
-		this.accounts = new HashSet<Account>();
-		this.accounts.add(new Account()); //default account
-		this.setCards(new HashSet<ChargeCard>());	
-		this.getCards().add(card);
-		}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Account newAccount, ChargeCard card) {
-		this.userID = userID;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.setPhoneNumber(phoneNumber);
-		this.password = password;
-		this.accounts = new HashSet<Account>();
-		this.accounts.add(newAccount);
-		this.setCards(new HashSet<ChargeCard>());
-		this.getCards().add(card);
-		}
-	
-	//--EXISTING USER--//
-	
-	/***
-	 * @author Leon Wilson
-	 */
 	public User(Integer userID, String firstName, String lastName, String username, String phoneNumber, String password, Set<Account> accounts, Set<ChargeCard> cards) {
 		this.userID = userID;
 		this.firstName = firstName;
@@ -113,54 +42,11 @@ public class User {
 	
 //---FUNCTIONS---//
 	
-	//--DISPLAY--//
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayAccounts() {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void displayUserSummary() {
-		
-	}
-	
-	public void displayCards() {
-		
-	}
-
-	//--FUNCTIONALITY--//
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void addAccount(String name, AccountTypes type) {
-		
-	}
-	
 	/***
 	 * @author Leon Wilson
 	 */
 	public void addAccount(Account a) {
 		this.accounts.add(a);
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void deleteAccount(Account a1) {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void transferBetweenAccounts(Account a1, Account a2, Double amount) {
-		
 	}
 	
 	//--GETTERS/SETTERS--//

@@ -14,10 +14,6 @@ public class SuperUser {
 	
 	//--NEW SUPER USER--//
 	public SuperUser() {
-		this.userID = 0000;
-		this.username = "root";
-		this.setPassword("Administration-Dec");
-		this.setUsers(new ArrayList<User>());
 	}
 	
 	//--EXISTING SUPER USER--//
@@ -30,35 +26,12 @@ public class SuperUser {
 	
 //---FUNCTIONS---//
 	
-	//--DISPLAY--//
-	public void displayUser(User user) {
-		
-	}
-	
 	public void displayAllUser() {
 		for(User u : users) {
 			System.out.println(u.getUserID() + " : " + u.getUsername());
 			System.out.println(u.getFirstName() + " " + u.getLastName() + "\n");
 		}
 	}
-	
-	//--FUNCTIONALITY--//
-	public void addUser(User user) {
-		
-	}
-	
-	public void removeUser(User user) {
-		
-	}
-	
-	public void updateUser(User user) {
-		
-	}
-	
-	public void deleteAll() {
-		
-	}
-	
 
 	//--GETTERS/SETTERS--//
 	public Integer getUserID() {

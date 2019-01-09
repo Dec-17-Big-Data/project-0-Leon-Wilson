@@ -1,17 +1,14 @@
 package banking.menus.standard_user;
 
-import org.apache.logging.log4j.core.pattern.NotANumber;
-
 import banking.Application;
 import banking.InputHelper;
 import banking.exceptions.ExitingException;
 import banking.exceptions.InvalidValueException;
+import banking.exceptions.account_exceptions.AccountAlreadyExistException;
 import banking.exceptions.account_exceptions.AccountDoesntExistException;
 import banking.exceptions.account_exceptions.NonEmptyAccountException;
-import banking.exceptions.sign_in_exceptions.NonexistantUserException;
 import banking.menus.Menu;
 import banking.model.*;
-import oracle.net.aso.u;
 
 public class AccountsMenu extends Menu {
 	protected String commands ="(((delete|add|access|display)-account(-list)?)|transfer)";
@@ -91,7 +88,7 @@ public class AccountsMenu extends Menu {
 						}
 						
 						if(!account_found) {
-							throw new AccountDoesntExistException();
+							throw new AccountDoesntExistException("Account doesn't exist.");
 						}
 					}catch (AccountDoesntExistException e) {
 						System.out.println("\nCouldn't find account.");
@@ -135,7 +132,6 @@ public class AccountsMenu extends Menu {
 			do {
 				if(cancelled) break;
 				System.out.println("\nPlease enter your accounts name");
-				boolean name_found = false;
 				String input = InputHelper.getInputHelper().getInput();
 				
 				if(input.equals(""))
@@ -144,13 +140,13 @@ public class AccountsMenu extends Menu {
 					cancelled = InputHelper.getInputHelper().cancelInput();
 					continue;
 				}
-				for(Account a : u.getAccounts()) {
-					if(a.getAccountName().equals(input)) {
-						name_found = true;
+				try {
+					for(Account a : u.getAccounts()) {
+						if(a.getAccountName().equals(input)) {
+							throw new AccountAlreadyExistException("Account already exist");
+						}
 					}
-				}
-				
-				if(name_found) {
+				} catch(AccountAlreadyExistException e) {
 					System.out.println("\nYou already have an account with the name : " + input);
 					cancelled = InputHelper.getInputHelper().cancelInput();
 					continue;
@@ -198,7 +194,7 @@ public class AccountsMenu extends Menu {
 					String input = InputHelper.getInputHelper().getInput();
 					
 					if(input.matches("[^0-9]")) {
-						 throw new InvalidValueException();
+						 throw new InvalidValueException("Invalid value entered.");
 					}
 					
 					accountBalance = Double.valueOf(input);
@@ -253,12 +249,12 @@ public class AccountsMenu extends Menu {
 					}
 					break;
 				} else {
-					throw new NonEmptyAccountException();
+					throw new NonEmptyAccountException("Cannot delete non empty account.");
 				}
 			}
 		}
 		
-		throw new AccountDoesntExistException();
+		throw new AccountDoesntExistException("Account doesn't exist.");
 	}
 	
 	@Override

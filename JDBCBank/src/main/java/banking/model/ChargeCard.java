@@ -8,19 +8,7 @@ public class ChargeCard {
 	private Account cardAccount;
 	
 //---CONSTRUCTORS---//
-	
-	//--NEW CARD--//
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public ChargeCard(Integer cardID, Integer pin, Account account) {
-		this.setCardID(cardID);
-		this.setCardNumber(111222333);//Assign a card number
-		this.setCardPin(pin);
-		this.setCreditLimit(500.00D);
-		this.setCardAccount(account);
-	}
+
 	
 	//--EXISTING CARD--//
 	
@@ -36,20 +24,6 @@ public class ChargeCard {
 	}
 
 //---FUNCTIONS---//
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void debitPurchase(Integer pin, Transaction trans) {
-		
-	}
-	
-	/***
-	 * @author Leon Wilson
-	 */
-	public void creditPurchase(Transaction trans) {
-		
-	}
 
 	//--GETTERS/SETTERS--//
 	

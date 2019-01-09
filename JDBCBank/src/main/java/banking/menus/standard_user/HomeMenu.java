@@ -3,7 +3,6 @@ package banking.menus.standard_user;
 import banking.Application;
 import banking.exceptions.ExitingException;
 import banking.menus.Menu;
-import banking.menus.NewUserMenu;
 import banking.model.*;
 
 public class HomeMenu extends Menu {
