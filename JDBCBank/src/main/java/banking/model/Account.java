@@ -7,12 +7,15 @@ public class Account {
 	private String accountName;
 	private Integer accountID;
 	private Integer userID;
-	private final AccountTypes type;
+	private AccountTypes type;
 	private Double balance;
 	private List<Transaction> pendingTransactions;
 	private List<Transaction> transactionHistory;
 
 //---CONSTRUCTORS---//
+	public Account() {
+		
+	}
 	
 	public Account(String name, Integer accountID, Integer userID, AccountTypes type, Double startingBalance) {
 		this.accountName = name;
@@ -65,6 +68,10 @@ public class Account {
 
 	public AccountTypes getType() {
 		return type;
+	}
+	
+	public void setType(AccountTypes type) {
+		this.type = type;
 	}
 
 	public Double getBalance() {
